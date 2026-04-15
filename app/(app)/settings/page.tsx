@@ -34,7 +34,7 @@ export default function SettingsPage() {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
     setSaving(true)
-    const supabase = createClient()
+    const supabase = await createClient()
     await supabase.from('profiles').update({ full_name: fullName, business_name: businessName, business_address: businessAddress, business_phone: businessPhone, tax_id: taxId, currency }).eq('id', profile!.id)
     setSaving(false)
     setSaved(true)

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 
 export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (!user || authError) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -32,7 +32,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
 
 export async function DELETE(_: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (!user || authError) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 

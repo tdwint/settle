@@ -6,7 +6,7 @@ import type { InvoiceWithItems } from '@/lib/types'
 
 export default async function PaymentPage({ params, searchParams }: { params: { id: string }, searchParams: { paid?: string } }) {
   // Use service role for public access
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: inv, error } = await supabase
     .from('invoices')

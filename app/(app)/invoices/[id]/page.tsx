@@ -5,7 +5,7 @@ import InvoiceActions from '@/components/invoices/InvoiceActions'
 import type { InvoiceWithItems } from '@/lib/types'
 
 export default async function InvoicePage({ params }: { params: { id: string } }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   const { data: inv, error } = await supabase
