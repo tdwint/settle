@@ -56,19 +56,12 @@ No technical knowledge needed. Follow these steps in order and your app will be 
 
 **Create your pricing plans:**
 1. Make sure you have Node.js installed (nodejs.org)
-2. In your project folder, create a file called `.env.local` and add:
+2. In your project folder, run:
    ```
-   STRIPE_SECRET_KEY=your-secret-key-here
+   STRIPE_SECRET_KEY=sk_test_... npx ts-node --skip-project stripe/setup.ts
    ```
-3. Run: `npx ts-node stripe/setup.ts`
-4. It will print two price IDs — copy them, you'll need them in Step 4
-
-**Set up webhooks (so Stripe tells your app when someone pays):**
-1. In Stripe: Developers → Webhooks → Add endpoint
-2. URL: `https://YOUR-APP-URL.vercel.app/api/stripe/webhook`
-   (you'll get this URL after Step 4 — come back and add it)
-3. Select events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`
-4. Copy the Signing secret → `STRIPE_WEBHOOK_SECRET`
+   (replace `sk_test_...` with your actual secret key)
+3. It will print two price IDs — copy them into your `.env.local`
 
 ---
 
@@ -76,7 +69,7 @@ No technical knowledge needed. Follow these steps in order and your app will be 
 
 1. Go to vercel.com and click "Add New Project"
 2. Import your GitHub repository
-3. Click "Environment Variables" and add ALL of these:
+3. Click "Environment Variables" and add these — skip `STRIPE_WEBHOOK_SECRET` for now, you'll add it in Step 5:
 
 | Variable | Value |
 |----------|-------|
@@ -85,18 +78,43 @@ No technical knowledge needed. Follow these steps in order and your app will be 
 | `SUPABASE_SERVICE_ROLE_KEY` | From Supabase Step 2 |
 | `STRIPE_SECRET_KEY` | From Stripe Step 3 |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | From Stripe Step 3 |
-| `STRIPE_WEBHOOK_SECRET` | From Stripe Step 3 |
 | `STRIPE_PRO_MONTHLY_PRICE_ID` | Printed by setup.ts |
 | `STRIPE_PRO_ANNUAL_PRICE_ID` | Printed by setup.ts |
 | `NEXT_PUBLIC_APP_URL` | Your Vercel URL, e.g. https://settle.vercel.app |
 
 4. Click "Deploy" — takes about 2 minutes
-
-**After deploying:** go back to Stripe and add your real Vercel URL to the webhook endpoint.
+5. Once deployed, copy your live app URL from Vercel (e.g. `https://settle-abc123.vercel.app`) — you need it for Step 5
 
 ---
 
-## Step 5: Test everything works
+## Step 5: Set up Stripe webhooks
+
+You need your live Vercel URL before doing this, which is why it comes after deployment.
+
+Stripe now uses **Workbench** instead of the old Developers Dashboard:
+
+1. In Stripe, click **Workbench** in the top navigation bar (or go to dashboard.stripe.com/workbench)
+2. Click the **Webhooks** tab
+3. Click **Add endpoint**
+4. In the **Endpoint URL** field, enter your Vercel URL + `/api/stripe/webhook`, for example:
+   `https://settle-abc123.vercel.app/api/stripe/webhook`
+5. Under **Select events**, add these three:
+   - `checkout.session.completed`
+   - `customer.subscription.updated`
+   - `customer.subscription.deleted`
+6. Click **Add endpoint**
+7. Click into the endpoint you just created, find **Signing secret**, click **Reveal**, and copy it
+
+> **Can't find Workbench?** Try: Dashboard → Developers (top right) → Webhooks → Add endpoint.
+
+**Now add the secret to Vercel:**
+1. Go to your Vercel project → Settings → Environment Variables
+2. Add `STRIPE_WEBHOOK_SECRET` = the signing secret you just copied
+3. Go to Vercel → Deployments → click the three dots on the latest deployment → **Redeploy**
+
+---
+
+## Step 6: Test everything works
 
 Go through this checklist after deploying:
 
@@ -153,7 +171,8 @@ No code knowledge needed.
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API → service_role key | `eyJhbGci...` |
 | `STRIPE_SECRET_KEY` | Stripe → Developers → API keys → Secret | `sk_live_...` |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe → Developers → API keys → Publishable | `pk_live_...` |
-| `STRIPE_WEBHOOK_SECRET` | Stripe → Developers → Webhooks → your endpoint → Signing secret | `whsec_...` |
+| `STRIPE_WEBHOOK_SECRET` | Stripe Workbench → Webhooks → your endpoint → Signing secret | `whsec_...` |
 | `STRIPE_PRO_MONTHLY_PRICE_ID` | Printed when you run `stripe/setup.ts` | `price_...` |
 | `STRIPE_PRO_ANNUAL_PRICE_ID` | Printed when you run `stripe/setup.ts` | `price_...` |
 | `NEXT_PUBLIC_APP_URL` | Your deployed URL | `https://gigpay.co` |
+| `RESEND_API_KEY` | resend.com → API Keys | `re_...` |
