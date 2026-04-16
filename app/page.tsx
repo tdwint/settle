@@ -244,10 +244,12 @@ export default function LandingPage() {
           <div className="relative">
             <h2 className="font-display text-4xl text-white mb-4">Ready to get paid on time?</h2>
             <p className="mb-8 max-w-md mx-auto" style={{color:'#94a3b8'}}>Join thousands of freelancers who use Settle to invoice clients and get paid faster.</p>
-            <Link href="/signup" className="btn-primary text-base px-8 py-3">
-              Start for free — no card needed
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            </Link>
+            <div className="flex justify-center">
+              <Link href="/signup" className="btn-primary text-base px-8 py-3">
+                Start for free — no card needed
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

@@ -1,8 +1,14 @@
 // Settle email notifications via Resend (resend.com)
-// Free tier: 3,000 emails/month — plenty for most freelancers
+// Free tier: 3,000 emails/month
+//
+// IMPORTANT: The FROM_ADDRESS must use a domain you've verified in Resend.
+// Until you verify gigpay.co, use Resend's free test domain: onboarding@resend.dev
+// To verify your domain: resend.com → Domains → Add Domain → follow DNS instructions
+//
+// Set RESEND_FROM_ADDRESS in your Vercel env vars to override the default.
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY
-const FROM_ADDRESS = 'Settle <notifications@settle.gigpay.co>'
+const FROM_ADDRESS = process.env.RESEND_FROM_ADDRESS ?? 'onboarding@resend.dev'
 
 interface SendEmailOptions {
   to: string
@@ -12,8 +18,8 @@ interface SendEmailOptions {
 
 export async function sendEmail({ to, subject, html }: SendEmailOptions) {
   if (!RESEND_API_KEY) {
-    console.warn('RESEND_API_KEY not set — skipping email')
-    return
+    console.warn('[email] RESEND_API_KEY not set — skipping email to:', to)
+    return { error: 'RESEND_API_KEY not configured' }
   }
 
   const res = await fetch('https://api.resend.com/emails', {
@@ -25,13 +31,18 @@ export async function sendEmail({ to, subject, html }: SendEmailOptions) {
     body: JSON.stringify({ from: FROM_ADDRESS, to, subject, html }),
   })
 
+  const data = await res.json()
+
   if (!res.ok) {
-    const err = await res.text()
-    console.error('Resend error:', err)
+    console.error('[email] Resend error:', JSON.stringify(data))
+    return { error: data }
   }
+
+  console.log('[email] Sent successfully to:', to, '— id:', data.id)
+  return { id: data.id }
 }
 
-// ─── Email Templates ─────────────────────────────────────────
+// ─── Email Templates ──────────────────────────────────────────
 
 export function invoicePaidEmailHtml({
   freelancerName,
@@ -40,6 +51,7 @@ export function invoicePaidEmailHtml({
   amount,
   currency,
   invoiceUrl,
+  items,
 }: {
   freelancerName: string
   clientName: string
@@ -47,113 +59,81 @@ export function invoicePaidEmailHtml({
   amount: string
   currency: string
   invoiceUrl: string
+  items?: { description: string; amount: number }[]
 }) {
+  const itemRows = items && items.length > 0
+    ? items.map(item => `
+        <tr>
+          <td style="padding:8px 0; font-size:14px; color:#475569; border-bottom:1px solid #f1f5f9;">${item.description}</td>
+          <td style="padding:8px 0; font-size:14px; color:#1e293b; font-weight:600; text-align:right; border-bottom:1px solid #f1f5f9;">$${item.amount.toFixed(2)}</td>
+        </tr>`).join('')
+    : ''
+
   return `
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <style>
-    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #fdfbf7; margin: 0; padding: 0; }
-    .container { max-width: 520px; margin: 40px auto; background: #fff; border-radius: 16px; border: 1px solid #e8d3a8; overflow: hidden; }
-    .header { background: #f04b35; padding: 32px; text-align: center; }
-    .header-logo { font-size: 28px; font-weight: 800; color: white; letter-spacing: -0.5px; }
-    .body { padding: 36px 40px; }
-    .emoji { font-size: 48px; text-align: center; display: block; margin-bottom: 20px; }
-    h1 { font-size: 22px; font-weight: 800; color: #111; margin: 0 0 8px; }
-    p { font-size: 15px; color: #555; line-height: 1.6; margin: 0 0 16px; }
-    .amount-box { background: #f0fdfb; border: 1px solid #99f5e8; border-radius: 12px; padding: 20px 24px; margin: 24px 0; text-align: center; }
-    .amount { font-size: 36px; font-weight: 800; color: #0d9488; }
-    .amount-label { font-size: 13px; color: #0f766e; margin-top: 4px; }
-    .btn { display: inline-block; background: #f04b35; color: white !important; font-weight: 700; font-size: 15px; padding: 13px 28px; border-radius: 12px; text-decoration: none; margin-top: 8px; }
-    .footer { padding: 20px 40px; background: #fdfbf7; border-top: 1px solid #f3e8d0; text-align: center; }
-    .footer p { font-size: 12px; color: #aaa; margin: 0; }
-  </style>
 </head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="header-logo">Settle</div>
-    </div>
-    <div class="body">
-      <span class="emoji">💸</span>
-      <h1>You just got paid, ${freelancerName.split(' ')[0]}!</h1>
-      <p>${clientName} paid your invoice <strong>${invoiceNumber}</strong>.</p>
-      <div class="amount-box">
-        <div class="amount">${amount} ${currency}</div>
-        <div class="amount-label">paid by ${clientName}</div>
-      </div>
-      <p>The funds will appear in your account according to your Stripe payout schedule (usually 2 business days).</p>
-      <a href="${invoiceUrl}" class="btn">View invoice →</a>
-    </div>
-    <div class="footer">
-      <p>Settle · Built for freelancers · <a href="${process.env.NEXT_PUBLIC_APP_URL}/settings" style="color:#aaa;">Manage notifications</a></p>
-    </div>
-  </div>
-</body>
-</html>
-  `.trim()
-}
+<body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; background:#f8fafc; margin:0; padding:0;">
+  <div style="max-width:520px; margin:40px auto; background:#fff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden;">
 
-export function invoiceSentConfirmationHtml({
-  freelancerName,
-  clientName,
-  invoiceNumber,
-  amount,
-  currency,
-  paymentUrl,
-}: {
-  freelancerName: string
-  clientName: string
-  invoiceNumber: string
-  amount: string
-  currency: string
-  paymentUrl: string
-}) {
-  return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <style>
-    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #fdfbf7; margin: 0; padding: 0; }
-    .container { max-width: 520px; margin: 40px auto; background: #fff; border-radius: 16px; border: 1px solid #e8d3a8; overflow: hidden; }
-    .header { background: #f04b35; padding: 32px; text-align: center; }
-    .header-logo { font-size: 28px; font-weight: 800; color: white; }
-    .body { padding: 36px 40px; }
-    h1 { font-size: 22px; font-weight: 800; color: #111; margin: 0 0 8px; }
-    p { font-size: 15px; color: #555; line-height: 1.6; margin: 0 0 16px; }
-    .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f3e8d0; font-size: 14px; }
-    .detail-label { color: #999; }
-    .detail-value { font-weight: 600; color: #333; }
-    .btn { display: inline-block; background: #f04b35; color: white !important; font-weight: 700; font-size: 15px; padding: 13px 28px; border-radius: 12px; text-decoration: none; margin-top: 20px; }
-    .footer { padding: 20px 40px; background: #fdfbf7; border-top: 1px solid #f3e8d0; text-align: center; }
-    .footer p { font-size: 12px; color: #aaa; margin: 0; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="header-logo">Settle</div>
-    </div>
-    <div class="body">
-      <h1>Invoice sent to ${clientName}</h1>
-      <p>Your invoice is on its way. Here's a summary:</p>
-      <div>
-        <div class="detail-row"><span class="detail-label">Invoice</span><span class="detail-value">${invoiceNumber}</span></div>
-        <div class="detail-row"><span class="detail-label">Client</span><span class="detail-value">${clientName}</span></div>
-        <div class="detail-row"><span class="detail-label">Amount</span><span class="detail-value">${amount} ${currency}</span></div>
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#080720 0%,#1e1b6e 100%); padding:28px 32px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:32px; height:32px; background:linear-gradient(135deg,#f59e0b,#d97706); border-radius:8px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:white; font-weight:700; font-size:16px;">S</span>
+        </div>
+        <span style="color:white; font-size:18px; font-weight:700;">Settle</span>
       </div>
-      <p style="margin-top:20px; font-size:13px; color:#999;">Share this payment link with your client if they need it:</p>
-      <p style="font-size:13px; font-family:monospace; background:#f5f5f5; padding:10px; border-radius:8px; word-break:break-all;">${paymentUrl}</p>
-      <a href="${paymentUrl}" class="btn">View payment page →</a>
     </div>
-    <div class="footer">
-      <p>Settle · Built for freelancers</p>
+
+    <!-- Body -->
+    <div style="padding:36px 32px;">
+      <div style="text-align:center; margin-bottom:28px;">
+        <div style="width:56px; height:56px; background:#f0fdf4; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:28px; margin-bottom:16px;">💸</div>
+        <h1 style="font-size:22px; font-weight:800; color:#0f172a; margin:0 0 6px;">You just got paid!</h1>
+        <p style="font-size:15px; color:#64748b; margin:0;">${clientName} paid invoice ${invoiceNumber}</p>
+      </div>
+
+      <!-- Amount box -->
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:20px; text-align:center; margin-bottom:24px;">
+        <div style="font-size:36px; font-weight:800; color:#15803d;">${amount} ${currency}</div>
+        <div style="font-size:13px; color:#16a34a; margin-top:4px;">paid by ${clientName}</div>
+      </div>
+
+      <!-- Line items -->
+      ${itemRows ? `
+      <table style="width:100%; border-collapse:collapse; margin-bottom:24px;">
+        <thead>
+          <tr>
+            <th style="text-align:left; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; padding-bottom:8px;">Description</th>
+            <th style="text-align:right; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; padding-bottom:8px;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>${itemRows}</tbody>
+      </table>` : ''}
+
+      <p style="font-size:14px; color:#64748b; line-height:1.6;">
+        Funds will appear in your account according to your Stripe payout schedule (typically 2 business days).
+      </p>
+
+      <div style="text-align:center; margin-top:28px;">
+        <a href="${invoiceUrl}" style="display:inline-block; background:linear-gradient(135deg,#f59e0b,#d97706); color:white; font-weight:700; font-size:15px; padding:13px 28px; border-radius:12px; text-decoration:none;">
+          View invoice →
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="padding:20px 32px; background:#f8fafc; border-top:1px solid #e2e8f0; text-align:center;">
+      <p style="font-size:12px; color:#94a3b8; margin:0;">
+        Settle · Built for freelancers ·
+        <a href="${process.env.NEXT_PUBLIC_APP_URL}/settings" style="color:#94a3b8;">Manage notifications</a>
+      </p>
     </div>
   </div>
 </body>
-</html>
-  `.trim()
+</html>`.trim()
 }

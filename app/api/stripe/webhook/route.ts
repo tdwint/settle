@@ -34,19 +34,24 @@ export async function POST(request: Request) {
           stripe_payment_intent_id: session.payment_intent as string,
         }).eq('id', invoiceId)
 
-        // Fetch invoice + freelancer profile for email
+        // Fetch invoice + line items + freelancer profile for email
         const { data: invoice } = await supabase
           .from('invoices')
-          .select('*, profiles(email, full_name, business_name)')
+          .select('*, invoice_items(*), profiles(email, full_name, business_name)')
           .eq('id', invoiceId)
           .single()
 
-        // FIX: notify freelancer the moment their client pays
+        // Notify freelancer the moment their client pays
         if (invoice?.profiles?.email) {
           const freelancerName = invoice.profiles.business_name ?? invoice.profiles.full_name ?? 'there'
           const amount = new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 2, maximumFractionDigits: 2,
           }).format(invoice.total)
+
+          const items = (invoice.invoice_items ?? []).map((item: any) => ({
+            description: item.description,
+            amount: item.amount,
+          }))
 
           await sendEmail({
             to: invoice.profiles.email,
@@ -58,6 +63,7 @@ export async function POST(request: Request) {
               amount,
               currency: invoice.currency,
               invoiceUrl: `${process.env.NEXT_PUBLIC_APP_URL}/invoices/${invoiceId}`,
+              items,
             }),
           })
         }

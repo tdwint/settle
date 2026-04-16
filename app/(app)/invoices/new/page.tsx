@@ -1,6 +1,6 @@
 'use client'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useSubscription } from '@/lib/hooks/useSubscription'
 import Link from 'next/link'
 
@@ -8,11 +8,14 @@ interface LineItem { description: string; quantity: number; rate: number }
 
 export default function NewInvoicePage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { canCreateInvoice, invoicesThisMonth } = useSubscription()
 
-  const [clientName, setClientName] = useState('')
-  const [clientEmail, setClientEmail] = useState('')
-  const [clientAddress, setClientAddress] = useState('')
+  // Pre-populate from client list "Invoice" button via URL params
+  const [clientName, setClientName] = useState(searchParams.get('client_name') ?? '')
+  const [clientEmail, setClientEmail] = useState(searchParams.get('client_email') ?? '')
+  const [clientAddress, setClientAddress] = useState(searchParams.get('client_address') ?? '')
+  const [clientId, setClientId] = useState(searchParams.get('client_id') ?? '')
   const [dueDate, setDueDate] = useState('')
   const [currency, setCurrency] = useState('USD')
   const [taxRate, setTaxRate] = useState(0)
@@ -41,7 +44,7 @@ export default function NewInvoicePage() {
     const res = await fetch('/api/invoices', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ client_name: clientName, client_email: clientEmail, client_address: clientAddress, due_date: dueDate || undefined, currency, tax_rate: taxRate, discount_amount: discount, notes, items }),
+      body: JSON.stringify({ client_id: clientId || undefined, client_name: clientName, client_email: clientEmail, client_address: clientAddress, due_date: dueDate || undefined, currency, tax_rate: taxRate, discount_amount: discount, notes, items }),
     })
 
     const data = await res.json()
