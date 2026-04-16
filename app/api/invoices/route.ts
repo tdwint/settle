@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import type { CreateInvoicePayload } from '@/lib/types'
 
 export async function GET() {
-  const supabase = await createClient()
+  const supabase = createClient()
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (!user || authError) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -18,7 +18,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const supabase = await createClient()
+  const supabase = createClient()
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (!user || authError) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 

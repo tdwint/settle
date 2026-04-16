@@ -19,7 +19,7 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
+  const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   const { data: invoices } = await supabase

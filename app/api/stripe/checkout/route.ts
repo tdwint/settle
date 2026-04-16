@@ -3,7 +3,7 @@ import { stripe } from '@/lib/stripe'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
-  const supabase = await createClient()
+  const supabase = createClient()
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (!user || authError) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import LogoutButton from '@/components/dashboard/LogoutButton'
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient()
+  const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
