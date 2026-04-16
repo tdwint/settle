@@ -1,7 +1,7 @@
-import { createServerClient, type SupabaseClient } from '@supabase/ssr'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
-export async function createClient(): Promise<SupabaseClient> {
+export async function getSupabase() {
   const cookieStore = await cookies()
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -20,3 +20,6 @@ export async function createClient(): Promise<SupabaseClient> {
     }
   )
 }
+
+// alias so existing imports still work
+export const createClient = getSupabase
