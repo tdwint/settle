@@ -2,193 +2,269 @@ import Link from 'next/link'
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-warm-50">
-      {/* NAV */}
-      <nav className="sticky top-0 z-50 bg-warm-50/80 backdrop-blur border-b border-gray-100">
+    <div className="min-h-screen font-sans" style={{backgroundColor:'#f8fafc'}}>
+
+      {/* ── NAV ─────────────────────────────────────────────── */}
+      <nav className="sticky top-0 z-50 backdrop-blur-md border-b" style={{backgroundColor:'rgba(15,13,56,0.95)', borderColor:'rgba(255,255,255,0.08)'}}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-coral-500 rounded-xl flex items-center justify-center">
-              <span className="text-white font-800">S</span>
+          <div className="flex items-center gap-2.5">
+            <div className="logo-mark">
+              <span className="text-white font-bold text-sm">S</span>
             </div>
-            <span className="text-xl font-800 text-gray-900">Settle</span>
+            <span className="text-base font-bold text-white tracking-tight">Settle</span>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-600 text-gray-600">
-            <a href="#features" className="hover:text-gray-900 transition-colors">Features</a>
-            <a href="#pricing" className="hover:text-gray-900 transition-colors">Pricing</a>
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium" style={{color:'rgba(148,163,184,1)'}}>
+            <a href="#features" className="hover:text-white transition-colors">Features</a>
+            <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="btn-secondary text-sm py-2 px-4">Sign in</Link>
-            <Link href="/signup" className="btn-primary text-sm py-2 px-4">Get started free</Link>
+            <Link href="/login" className="text-sm font-medium px-4 py-2 rounded-xl transition-colors" style={{color:'rgba(148,163,184,1)'}}>Sign in</Link>
+            <Link href="/signup" className="btn-primary">Get started free</Link>
           </div>
         </div>
       </nav>
 
-      {/* HERO */}
-      <section className="max-w-6xl mx-auto px-6 pt-24 pb-20 text-center">
-        <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-700 text-sm font-600 px-4 py-1.5 rounded-full mb-8">
-          <span className="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></span>
-          Free to start — no credit card needed
-        </div>
-        <h1 className="text-5xl md:text-6xl font-800 text-gray-900 leading-tight mb-6">
-          Get paid faster.<br />
-          <span className="text-coral-500">No chasing required.</span>
-        </h1>
-        <p className="text-xl text-gray-500 max-w-2xl mx-auto mb-10">
-          Settle makes invoicing effortless for freelancers — send professional invoices in seconds
-          and let clients pay online instantly.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/signup" className="btn-primary text-base px-8 py-3">
-            Start sending invoices →
-          </Link>
-          <a href="#features" className="btn-secondary text-base px-8 py-3">See how it works</a>
-        </div>
+      {/* ── HERO ────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden" style={{background:'linear-gradient(135deg, #080720 0%, #0f0d38 30%, #16134f 60%, #1e1b6e 100%)', minHeight:'600px'}}>
 
-        {/* HERO CARD MOCKUP */}
-        <div className="mt-16 relative max-w-3xl mx-auto">
-          <div className="card p-6 text-left shadow-xl">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wider font-600">Invoice</p>
-                <p className="text-lg font-700 text-gray-900">INV-0042</p>
-              </div>
-              <span className="bg-teal-100 text-teal-700 text-sm font-600 px-3 py-1 rounded-full">Paid ✓</span>
+        {/* Dot grid overlay */}
+        <div className="absolute inset-0" style={{backgroundImage:'radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)', backgroundSize:'24px 24px'}} />
+
+        {/* Glow orbs */}
+        <div className="absolute rounded-full blur-3xl pointer-events-none" style={{top:'-100px', right:'-100px', width:'500px', height:'500px', background:'rgba(245,158,11,0.08)'}} />
+        <div className="absolute rounded-full blur-3xl pointer-events-none" style={{bottom:'-100px', left:'-100px', width:'400px', height:'400px', background:'rgba(99,102,241,0.08)'}} />
+
+        <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-32">
+          <div className="max-w-2xl">
+
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 border rounded-full px-3 py-1.5 mb-8 text-xs font-semibold uppercase tracking-wider" style={{background:'rgba(255,255,255,0.06)', borderColor:'rgba(255,255,255,0.12)', color:'#fcd34d'}}>
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{background:'#f59e0b'}} />
+              Free to start — no credit card required
             </div>
-            <div className="flex justify-between items-end">
-              <div>
-                <p className="text-sm text-gray-500 mb-1">Billed to</p>
-                <p className="font-600 text-gray-900">Acme Corp</p>
-                <p className="text-sm text-gray-500">sarah@acmecorp.com</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-500 mb-1">Total</p>
-                <p className="text-3xl font-800 text-gray-900">$2,400.00</p>
-              </div>
-            </div>
-            <div className="mt-4 pt-4 border-t border-gray-100">
-              <div className="flex justify-between text-sm text-gray-500">
-                <span>Web design & development · 12h @ $200</span>
-                <span className="font-600 text-gray-900">$2,400</span>
-              </div>
+
+            {/* Headline */}
+            <h1 className="font-display leading-tight mb-6" style={{fontSize:'clamp(2.5rem, 5vw, 4.5rem)', color:'#ffffff', letterSpacing:'-0.03em', lineHeight:'1.05'}}>
+              Get paid faster.<br />
+              <span style={{color:'#fbbf24'}}>No chasing</span> required.
+            </h1>
+
+            <p className="text-lg leading-relaxed max-w-xl mb-10" style={{color:'rgba(148,163,184,0.9)'}}>
+              Settle makes invoicing effortless for freelancers. Send professional
+              invoices in seconds and let clients pay online instantly.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link href="/signup" className="btn-primary text-base px-7 py-3">
+                Start sending invoices
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </Link>
+              <a href="#features" className="inline-flex items-center justify-center text-base font-medium px-7 py-3 rounded-xl transition-all" style={{background:'rgba(255,255,255,0.08)', border:'1px solid rgba(255,255,255,0.15)', color:'white'}}>
+                See how it works
+              </a>
             </div>
           </div>
-          <div className="absolute -bottom-4 -right-4 bg-teal-500 text-white rounded-2xl px-4 py-2 text-sm font-700 shadow-lg">
-            💸 Payment received!
-          </div>
-        </div>
-      </section>
 
-      {/* FEATURES */}
-      <section id="features" className="bg-white py-24">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-800 text-gray-900 mb-4">Everything you need to get paid</h2>
-            <p className="text-lg text-gray-500 max-w-xl mx-auto">Built for freelancers who'd rather spend time doing great work than chasing payments.</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: '✨', color: 'bg-coral-50', title: 'Beautiful custom invoices', desc: 'Add your logo, business name, and brand colors. Every invoice looks like it came from a real studio.' },
-              { icon: '💳', color: 'bg-teal-50', title: 'Online payments via card', desc: 'Clients pay directly from the invoice — card or bank transfer. Money lands in your account automatically.' },
-              { icon: '🔔', color: 'bg-warm-100', title: 'Know the second they pay', desc: 'Instant notifications when a client views or pays your invoice. No more "did you get it?" emails.' },
-            ].map(f => (
-              <div key={f.title} className="card p-6">
-                <div className={`${f.color} w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4`}>{f.icon}</div>
-                <h3 className="font-700 text-gray-900 mb-2">{f.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
+          {/* HERO INVOICE CARD */}
+          <div className="absolute right-6 top-16 hidden lg:block w-80">
+            <div className="bg-white rounded-2xl p-6" style={{boxShadow:'0 25px 50px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05)'}}>
+              <div className="flex items-start justify-between mb-5">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{color:'#94a3b8'}}>Invoice</p>
+                  <p className="text-lg font-bold" style={{color:'#0f172a'}}>INV-0042</p>
+                </div>
+                <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style={{background:'#f0fdf4', color:'#15803d', border:'1px solid #bbf7d0'}}>
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                  Paid
+                </span>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PRICING */}
-      <section id="pricing" className="py-24 max-w-6xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-800 text-gray-900 mb-4">Simple, honest pricing</h2>
-          <p className="text-lg text-gray-500">Start free. Upgrade when you're ready.</p>
-        </div>
-        <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-          {/* FREE */}
-          <div className="card p-8">
-            <p className="font-700 text-gray-900 text-lg mb-1">Free</p>
-            <p className="text-4xl font-800 text-gray-900 mb-1">$0<span className="text-lg font-500 text-gray-400">/mo</span></p>
-            <p className="text-gray-500 text-sm mb-6">Forever free</p>
-            <ul className="space-y-3 mb-8">
-              {['3 invoices per month', 'Custom branding', 'Online payments', 'PDF export'].map(f => (
-                <li key={f} className="flex items-center gap-2 text-sm text-gray-700">
-                  <span className="text-teal-500">✓</span> {f}
-                </li>
-              ))}
-            </ul>
-            <Link href="/signup" className="btn-secondary w-full text-center block">Get started free</Link>
-          </div>
-          {/* PRO */}
-          <div className="card p-8 border-coral-200 bg-gradient-to-b from-coral-50 to-white relative overflow-hidden">
-            <div className="absolute top-4 right-4 bg-coral-500 text-white text-xs font-700 px-3 py-1 rounded-full">Popular</div>
-            <p className="font-700 text-gray-900 text-lg mb-1">Pro</p>
-            <p className="text-4xl font-800 text-gray-900 mb-1">$12<span className="text-lg font-500 text-gray-400">/mo</span></p>
-            <p className="text-gray-500 text-sm mb-6">$120/year — save 2 months</p>
-            <ul className="space-y-3 mb-8">
-              {['Unlimited invoices', 'Custom branding', 'Online payments', 'PDF export', 'Client reminders', 'CSV export'].map(f => (
-                <li key={f} className="flex items-center gap-2 text-sm text-gray-700">
-                  <span className="text-teal-500">✓</span> {f}
-                </li>
-              ))}
-            </ul>
-            <Link href="/signup" className="btn-primary w-full text-center block">Start Pro free</Link>
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <section className="bg-white py-24">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-4xl font-800 text-gray-900 text-center mb-16">Freelancers love Settle</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { name: 'Maya T.', role: 'Graphic Designer', quote: 'I used to dread sending invoices. Now I do it in 2 minutes and clients actually pay on time.' },
-              { name: 'James R.', role: 'Web Developer', quote: 'The payment link on the invoice is a game changer. No more PayPal back-and-forth.' },
-              { name: 'Priya K.', role: 'Copywriter', quote: 'Finally an invoicing tool that doesn\'t feel like filing taxes. Clean, fast, and my clients love it.' },
-            ].map(t => (
-              <div key={t.name} className="card p-6">
-                <p className="text-gray-700 mb-6 leading-relaxed">"{t.quote}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-coral-100 rounded-full flex items-center justify-center font-700 text-coral-600">{t.name[0]}</div>
-                  <div>
-                    <p className="font-700 text-gray-900 text-sm">{t.name}</p>
-                    <p className="text-gray-400 text-xs">{t.role}</p>
-                  </div>
+              <div className="space-y-2 mb-5 pb-5" style={{borderBottom:'1px solid #f1f5f9'}}>
+                <div className="flex justify-between text-sm">
+                  <span style={{color:'#64748b'}}>Web design · 8h</span>
+                  <span className="font-semibold" style={{color:'#1e293b'}}>$1,600</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span style={{color:'#64748b'}}>Development · 4h</span>
+                  <span className="font-semibold" style={{color:'#1e293b'}}>$800</span>
                 </div>
               </div>
+              <div className="flex justify-between items-end">
+                <div>
+                  <p className="text-xs mb-1" style={{color:'#94a3b8'}}>Billed to</p>
+                  <p className="text-sm font-semibold" style={{color:'#1e293b'}}>Acme Corp</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs mb-1" style={{color:'#94a3b8'}}>Total</p>
+                  <p className="text-2xl font-bold" style={{color:'#0f172a'}}>$2,400</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Notification */}
+            <div className="mt-3 rounded-xl px-4 py-2.5 flex items-center gap-3" style={{background:'#059669', boxShadow:'0 10px 25px -5px rgba(5,150,105,0.4)'}}>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{background:'rgba(255,255,255,0.2)'}}>
+                <span className="text-base">💸</span>
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-white">Payment received</p>
+                <p className="text-xs" style={{color:'rgba(167,243,208,1)'}}>Acme Corp paid $2,400.00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom fade to cream */}
+        <div className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none" style={{background:'linear-gradient(to bottom, transparent, #f8fafc)'}} />
+      </section>
+
+      {/* ── SOCIAL PROOF ────────────────────────────────────── */}
+      <section className="py-10 border-b" style={{borderColor:'#e2e8f0'}}>
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-5" style={{color:'#94a3b8'}}>Trusted by freelancers worldwide</p>
+          <div className="flex items-center justify-center gap-10 flex-wrap">
+            {['Designers', 'Developers', 'Copywriters', 'Consultants', 'Photographers'].map(role => (
+              <span key={role} className="text-sm font-medium" style={{color:'#cbd5e1'}}>{role}</span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 max-w-6xl mx-auto px-6 text-center">
-        <div className="bg-coral-500 rounded-3xl px-8 py-16">
-          <h2 className="text-4xl font-800 text-white mb-4">Ready to get paid on time?</h2>
-          <p className="text-coral-100 text-lg mb-8 max-w-xl mx-auto">Join thousands of freelancers who use Settle to send invoices and get paid faster.</p>
-          <Link href="/signup" className="inline-block bg-white text-coral-600 font-700 px-8 py-3 rounded-xl hover:bg-coral-50 transition-colors">
-            Start for free — no card needed →
-          </Link>
+      {/* ── FEATURES ────────────────────────────────────────── */}
+      <section id="features" className="py-24 max-w-6xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{color:'#d97706'}}>Features</p>
+          <h2 className="font-display text-4xl mb-4" style={{color:'#0f172a'}}>Everything you need to get paid</h2>
+          <p className="max-w-lg mx-auto" style={{color:'#64748b'}}>Built for freelancers who'd rather spend time doing great work than chasing payments.</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { icon:'✦', bg:'#fffbeb', color:'#d97706', title:'Beautiful custom invoices', desc:'Add your logo, business name, and brand. Every invoice looks like it came from a real studio — because it did.' },
+            { icon:'⬡', bg:'#eff6ff', color:'#2563eb', title:'Online payments via card', desc:'Clients pay directly from the invoice link. Money lands in your account automatically via Stripe.' },
+            { icon:'◉', bg:'#f0fdf4', color:'#16a34a', title:'Know the second they pay', desc:'Instant email the moment a client pays. No more refreshing your bank app.' },
+            { icon:'⊞', bg:'#faf5ff', color:'#9333ea', title:'Client management', desc:'Keep all your clients in one place. See total billed, outstanding amounts, and invoice history at a glance.' },
+            { icon:'◎', bg:'#fff1f2', color:'#e11d48', title:'Tax & discounts built in', desc:'Add tax rates, discounts, and notes to every invoice. Your tax ID prints automatically.' },
+            { icon:'⬟', bg:'#f8fafc', color:'#475569', title:'Multi-currency support', desc:'Bill clients in USD, EUR, GBP, and 5 other currencies. Perfect for international freelancers.' },
+          ].map(f => (
+            <div key={f.title} className="card p-6 transition-all duration-200 hover:-translate-y-0.5" style={{cursor:'default'}}>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold mb-4" style={{background:f.bg, color:f.color}}>{f.icon}</div>
+              <h3 className="font-semibold mb-2" style={{color:'#0f172a'}}>{f.title}</h3>
+              <p className="text-sm leading-relaxed" style={{color:'#64748b'}}>{f.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="border-t border-gray-100 py-8">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-coral-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-800 text-xs">S</span>
-            </div>
-            <span className="font-600 text-gray-600">Settle</span>
+      {/* ── PRICING ─────────────────────────────────────────── */}
+      <section id="pricing" className="py-24 border-y" style={{background:'rgba(15,13,56,0.02)', borderColor:'#e2e8f0'}}>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{color:'#d97706'}}>Pricing</p>
+            <h2 className="font-display text-4xl mb-4" style={{color:'#0f172a'}}>Simple, honest pricing</h2>
+            <p style={{color:'#64748b'}}>Start free. Upgrade when you're ready for more.</p>
           </div>
-          <p>© {new Date().getFullYear()} Settle. Built for freelancers.</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-gray-600">Privacy</a>
-            <a href="#" className="hover:text-gray-600">Terms</a>
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {/* FREE */}
+            <div className="card p-8">
+              <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{color:'#94a3b8'}}>Free</p>
+              <div className="flex items-end gap-1 mb-1">
+                <span className="text-4xl font-bold" style={{color:'#0f172a'}}>$0</span>
+              </div>
+              <p className="text-sm mb-8" style={{color:'#94a3b8'}}>Forever free, no card needed</p>
+              <ul className="space-y-3 mb-8">
+                {['3 invoices per month', 'Custom branding', 'Online payments', 'PDF export', 'Client management'].map(f => (
+                  <li key={f} className="flex items-center gap-2.5 text-sm" style={{color:'#475569'}}>
+                    <svg className="w-4 h-4 flex-shrink-0" style={{color:'#16a34a'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/signup" className="btn-secondary w-full justify-center">Get started free</Link>
+            </div>
+            {/* PRO */}
+            <div className="relative rounded-2xl p-8 overflow-hidden" style={{background:'linear-gradient(160deg, #080720 0%, #1e1b6e 100%)'}}>
+              <div className="absolute rounded-full blur-2xl pointer-events-none" style={{top:'-50px', right:'-50px', width:'200px', height:'200px', background:'rgba(245,158,11,0.12)'}} />
+              <div className="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full" style={{background:'#f59e0b', color:'white'}}>Most popular</div>
+              <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{color:'rgba(251,191,36,0.7)'}}>Pro</p>
+              <div className="flex items-end gap-1 mb-1">
+                <span className="text-4xl font-bold text-white">$12</span>
+                <span className="mb-1" style={{color:'#64748b'}}>/month</span>
+              </div>
+              <p className="text-sm mb-8" style={{color:'#64748b'}}>$120/year — save 2 months</p>
+              <ul className="space-y-3 mb-8">
+                {['Unlimited invoices', 'Custom branding', 'Online payments', 'PDF export', 'Client management', 'Client reminders', 'CSV export', 'Priority support'].map(f => (
+                  <li key={f} className="flex items-center gap-2.5 text-sm" style={{color:'#cbd5e1'}}>
+                    <svg className="w-4 h-4 flex-shrink-0" style={{color:'#fbbf24'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/signup" className="btn-primary w-full justify-center">Start Pro free</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ────────────────────────────────────── */}
+      <section className="py-24 max-w-6xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{color:'#d97706'}}>Testimonials</p>
+          <h2 className="font-display text-4xl" style={{color:'#0f172a'}}>Freelancers love Settle</h2>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { name:'Maya T.', role:'Graphic Designer', quote:'I used to dread invoicing. Now I do it in 2 minutes and clients actually pay on time. The payment link is genius.' },
+            { name:'James R.', role:'Web Developer', quote:'The moment I get that "payment received" email is the best feeling. No more checking my bank app every hour.' },
+            { name:'Priya K.', role:'Copywriter', quote:'Finally an invoicing tool that doesn\'t feel like filing taxes. Clean, fast, and my clients always comment on how professional it looks.' },
+          ].map(t => (
+            <div key={t.name} className="card p-6">
+              <div className="flex gap-0.5 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4" style={{color:'#f59e0b'}} fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                ))}
+              </div>
+              <p className="text-sm leading-relaxed mb-5" style={{color:'#475569'}}>"{t.quote}"</p>
+              <div className="flex items-center gap-3 pt-4" style={{borderTop:'1px solid #f1f5f9'}}>
+                <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0" style={{background:'linear-gradient(135deg, #0f0d38 0%, #1e1b6e 100%)', color:'#fbbf24'}}>
+                  {t.name[0]}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold" style={{color:'#1e293b'}}>{t.name}</p>
+                  <p className="text-xs" style={{color:'#94a3b8'}}>{t.role}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA ─────────────────────────────────────────────── */}
+      <section className="pb-24 max-w-6xl mx-auto px-6">
+        <div className="relative overflow-hidden rounded-3xl px-10 py-16 text-center" style={{background:'linear-gradient(135deg, #080720 0%, #1e1b6e 100%)'}}>
+          <div className="absolute rounded-full blur-3xl pointer-events-none" style={{top:'-100px', left:'50%', transform:'translateX(-50%)', width:'400px', height:'400px', background:'rgba(245,158,11,0.1)'}} />
+          <div className="relative">
+            <h2 className="font-display text-4xl text-white mb-4">Ready to get paid on time?</h2>
+            <p className="mb-8 max-w-md mx-auto" style={{color:'#94a3b8'}}>Join thousands of freelancers who use Settle to invoice clients and get paid faster.</p>
+            <Link href="/signup" className="btn-primary text-base px-8 py-3">
+              Start for free — no card needed
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ──────────────────────────────────────────── */}
+      <footer className="border-t py-8" style={{borderColor:'#e2e8f0'}}>
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-2.5">
+            <div className="logo-mark w-7 h-7 rounded-lg">
+              <span className="text-white font-bold text-xs">S</span>
+            </div>
+            <span className="text-sm font-semibold" style={{color:'#334155'}}>Settle</span>
+          </div>
+          <p className="text-xs" style={{color:'#94a3b8'}}>© {new Date().getFullYear()} Settle. Built for freelancers.</p>
+          <div className="flex gap-6 text-xs" style={{color:'#94a3b8'}}>
+            <a href="#" className="hover:text-slate-600 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-slate-600 transition-colors">Terms</a>
           </div>
         </div>
       </footer>
