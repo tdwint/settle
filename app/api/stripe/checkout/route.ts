@@ -3,16 +3,17 @@ import { stripe } from '@/lib/stripe'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
-  const supabase = createClient()
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (!user || authError) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
   const { priceId, invoiceId } = await request.json()
   const appUrl = process.env.NEXT_PUBLIC_APP_URL!
+  const supabase = createClient()
 
-  // Subscription checkout
+  // ── Subscription checkout (requires auth) ──────────────────
   if (priceId) {
-    const { data: profile } = await supabase.from('profiles').select('stripe_customer_id, email').eq('id', user.id).single()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (!user || authError) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+    const { data: profile } = await supabase
+      .from('profiles').select('stripe_customer_id, email').eq('id', user.id).single()
 
     let customerId = profile?.stripe_customer_id
     if (!customerId) {
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ url: session.url })
   }
 
-  // Invoice payment checkout (for clients)
+  // ── Invoice payment checkout (public — no auth required) ───
   if (invoiceId) {
     const { data: invoice } = await supabase
       .from('invoices').select('*, profiles(email, full_name, business_name)')
@@ -41,6 +42,7 @@ export async function POST(request: Request) {
 
     if (!invoice) return NextResponse.json({ error: 'Invoice not found' }, { status: 404 })
     if (invoice.status === 'paid') return NextResponse.json({ error: 'Already paid' }, { status: 400 })
+    if (!invoice.total || invoice.total <= 0) return NextResponse.json({ error: 'Invoice total must be greater than zero' }, { status: 400 })
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
