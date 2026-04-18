@@ -13,7 +13,7 @@ export default function ForgotPasswordPage() {
     e.preventDefault()
     setLoading(true)
     await supabase.auth.resetPasswordForEmail(email, {
-      emailRedirectTo: `${window.location.origin}/auth/callback?type=recovery`,
+      redirectTo: `${window.location.origin}/auth/callback?type=recovery`,
     })
     setSent(true)
     setLoading(false)
