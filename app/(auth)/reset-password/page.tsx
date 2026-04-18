@@ -10,16 +10,42 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [ready, setReady] = useState(false)
+  const [expired, setExpired] = useState(false)
   const router = useRouter()
   const supabase = createClient()
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setReady(true)
+    // Supabase puts the token in the URL hash: #access_token=...&type=recovery
+    // We need to manually parse it and exchange it for a session
+    async function handleToken() {
+      const hash = window.location.hash
+      if (!hash) { setExpired(true); return }
+
+      const params = new URLSearchParams(hash.replace('#', ''))
+      const accessToken = params.get('access_token')
+      const refreshToken = params.get('refresh_token')
+      const type = params.get('type')
+
+      if (type !== 'recovery' || !accessToken || !refreshToken) {
+        setExpired(true)
+        return
       }
-    })
-    return () => subscription.unsubscribe()
+
+      // Exchange tokens for a session
+      const { error } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      })
+
+      if (error) {
+        setExpired(true)
+        return
+      }
+
+      setReady(true)
+    }
+
+    handleToken()
   }, [])
 
   async function handleReset(e: React.FormEvent) {
@@ -28,10 +54,13 @@ export default function ResetPasswordPage() {
     if (password.length < 8) { setError('Password must be at least 8 characters'); return }
     if (password !== confirm) { setError('Passwords do not match'); return }
     setLoading(true)
+
     const { error } = await supabase.auth.updateUser({ password })
     if (error) { setError(error.message); setLoading(false); return }
-    router.push('/dashboard')
-    router.refresh()
+
+    // Sign out and redirect to login so they sign in fresh with new password
+    await supabase.auth.signOut()
+    router.push('/login?reset=success')
   }
 
   return (
@@ -53,31 +82,39 @@ export default function ResetPasswordPage() {
         </div>
 
         <div className="auth-card">
-          {!ready ? (
+          {expired ? (
+            <div className="text-center py-6">
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                style={{background:'#fef2f2'}}>
+                <svg className="w-6 h-6" style={{color:'#dc2626'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h2 className="font-bold text-slate-900 mb-2">Link expired or invalid</h2>
+              <p className="text-sm mb-6" style={{color:'#64748b'}}>
+                Reset links expire after 1 hour. Request a new one below.
+              </p>
+              <Link href="/forgot-password" className="btn-primary">
+                Request new reset link
+              </Link>
+            </div>
+          ) : !ready ? (
             <div className="text-center py-8">
               <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin mx-auto mb-4"
                 style={{borderColor:'#f59e0b', borderTopColor:'transparent'}} />
               <p className="text-sm" style={{color:'#64748b'}}>Verifying reset link…</p>
-              <p className="text-xs mt-2" style={{color:'#94a3b8'}}>
-                Link expired?{' '}
-                <Link href="/forgot-password" className="hover:underline" style={{color:'#d97706'}}>
-                  Request a new one
-                </Link>
-              </p>
             </div>
           ) : (
             <form onSubmit={handleReset} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{color:'#64748b'}}>
-                  New password
-                </label>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-2"
+                  style={{color:'#64748b'}}>New password</label>
                 <input type="password" value={password} onChange={e => setPassword(e.target.value)}
                   className="input" placeholder="8+ characters" required />
               </div>
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{color:'#64748b'}}>
-                  Confirm password
-                </label>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-2"
+                  style={{color:'#64748b'}}>Confirm password</label>
                 <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)}
                   className="input" placeholder="Same password again" required />
               </div>
