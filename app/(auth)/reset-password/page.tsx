@@ -15,9 +15,7 @@ export default function ResetPasswordPage() {
   const supabase = createClient()
 
   useEffect(() => {
-    // Supabase puts the token in the URL hash: #access_token=...&type=recovery
-    // We need to manually parse it and exchange it for a session
-    async function handleToken() {
+    async function setupSession() {
       const hash = window.location.hash
       if (!hash) { setExpired(true); return }
 
@@ -31,13 +29,13 @@ export default function ResetPasswordPage() {
         return
       }
 
-      // Exchange tokens for a session
       const { error } = await supabase.auth.setSession({
         access_token: accessToken,
         refresh_token: refreshToken,
       })
 
       if (error) {
+        console.error('Session error:', error)
         setExpired(true)
         return
       }
@@ -45,7 +43,7 @@ export default function ResetPasswordPage() {
       setReady(true)
     }
 
-    handleToken()
+    setupSession()
   }, [])
 
   async function handleReset(e: React.FormEvent) {
@@ -58,9 +56,8 @@ export default function ResetPasswordPage() {
     const { error } = await supabase.auth.updateUser({ password })
     if (error) { setError(error.message); setLoading(false); return }
 
-    // Sign out and redirect to login so they sign in fresh with new password
     await supabase.auth.signOut()
-    router.push('/login?reset=success')
+    router.push('/login')
   }
 
   return (
