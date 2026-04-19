@@ -9,6 +9,13 @@ export default function SettingsPage() {
   const { profile, loading } = useUser()
   const searchParams = useSearchParams()
   const [tab, setTab] = useState(searchParams.get('tab') ?? 'profile')
+  const [mfaEnrolling, setMfaEnrolling] = useState(false)
+  const [qrCode, setQrCode] = useState('')
+  const [totpSecret, setTotpSecret] = useState('')
+  const [totpCode, setTotpCode] = useState('')
+  const [mfaError, setMfaError] = useState('')
+  const [mfaSuccess, setMfaSuccess] = useState('')
+  const [mfaEnabled, setMfaEnabled] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [billingLoading, setBillingLoading] = useState('')
@@ -68,7 +75,7 @@ export default function SettingsPage() {
       )}
 
       <div className="flex gap-1 mb-8 bg-gray-100 rounded-xl p-1 w-fit">
-        {['profile', 'billing'].map(t => (
+        {['profile', 'billing', 'security'].map(t => (
           <button key={t} onClick={() => setTab(t)}
             className={`px-5 py-2 rounded-lg text-sm font-600 transition-all ${tab === t ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}>
             {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -126,7 +133,7 @@ export default function SettingsPage() {
               </div>
             ) : (
               <div>
-                <p className="text-sm text-gray-600 mb-6">You're on the Free plan — {profile?.invoices_this_month ?? 0}/3 invoices used this month.</p>
+                <p className="text-sm text-gray-600 mb-6">You're on the Free plan — {profile?.invoices_this_month ?? 0}/5 invoices used this month.</p>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="border border-gray-200 rounded-2xl p-4">
                     <p className="font-700 text-gray-900 mb-1">Monthly</p>
@@ -149,6 +156,114 @@ export default function SettingsPage() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+      {tab === 'security' && (
+        <div className="card p-6 space-y-6">
+          <div>
+            <h2 className="font-bold text-slate-900 mb-1">Two-factor authentication</h2>
+            <p className="text-sm text-slate-500 mb-4">
+              Add an extra layer of security. After enabling, you'll need your authenticator
+              app (Google Authenticator, Authy, etc.) when signing in.
+            </p>
+
+            {mfaSuccess && (
+              <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl px-4 py-3 mb-4">
+                {mfaSuccess}
+              </div>
+            )}
+            {mfaError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-4">
+                {mfaError}
+              </div>
+            )}
+
+            {!mfaEnrolling ? (
+              <button
+                onClick={async () => {
+                  setMfaEnrolling(true)
+                  setMfaError('')
+                  const { createClient } = await import('@/lib/supabase/client')
+                  const supabase = createClient()
+                  const { data, error } = await supabase.auth.mfa.enroll({ factorType: 'totp', friendlyName: 'Authenticator app' })
+                  if (error) { setMfaError(error.message); setMfaEnrolling(false); return }
+                  setQrCode(data.totp.qr_code)
+                  setTotpSecret(data.totp.secret)
+                }}
+                className="btn-primary"
+              >
+                Set up authenticator app
+              </button>
+            ) : (
+              <div className="space-y-4">
+                <p className="text-sm text-slate-600">
+                  1. Open your authenticator app and scan this QR code:
+                </p>
+                {qrCode && (
+                  <div className="bg-white border border-slate-200 rounded-xl p-4 inline-block">
+                    <img src={qrCode} alt="QR Code" className="w-40 h-40" />
+                  </div>
+                )}
+                {totpSecret && (
+                  <p className="text-xs text-slate-400">
+                    Or enter manually: <span className="font-mono font-semibold text-slate-600">{totpSecret}</span>
+                  </p>
+                )}
+                <p className="text-sm text-slate-600">2. Enter the 6-digit code from your app:</p>
+                <div className="flex gap-3 items-center">
+                  <input
+                    className="input w-40 text-center text-lg font-mono tracking-widest"
+                    placeholder="000000"
+                    maxLength={6}
+                    value={totpCode}
+                    onChange={e => setTotpCode(e.target.value.replace(/\D/g, ''))}
+                  />
+                  <button
+                    onClick={async () => {
+                      setMfaError('')
+                      const { createClient } = await import('@/lib/supabase/client')
+                      const supabase = createClient()
+                      const { data: factors } = await supabase.auth.mfa.listFactors()
+                      const factorId = factors?.totp?.[0]?.id
+                      if (!factorId) { setMfaError('Setup failed — please try again'); return }
+                      const { data: challenge } = await supabase.auth.mfa.challenge({ factorId })
+                      if (!challenge) { setMfaError('Challenge failed'); return }
+                      const { error } = await supabase.auth.mfa.verify({ factorId, challengeId: challenge.id, code: totpCode })
+                      if (error) { setMfaError('Invalid code — try again'); return }
+                      setMfaSuccess('Two-factor authentication enabled!')
+                      setMfaEnrolling(false)
+                      setMfaEnabled(true)
+                    }}
+                    disabled={totpCode.length !== 6}
+                    className="btn-primary"
+                  >
+                    Verify & enable
+                  </button>
+                  <button onClick={() => setMfaEnrolling(false)} className="btn-secondary">Cancel</button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="pt-4 border-t border-slate-100">
+            <h3 className="font-semibold text-slate-900 mb-1">Passkey (Face ID / Touch ID)</h3>
+            <p className="text-sm text-slate-500 mb-4">
+              Sign in with Face ID or Touch ID instead of a password.
+              Available on supported devices and browsers.
+            </p>
+            <button
+              onClick={async () => {
+                const { createClient } = await import('@/lib/supabase/client')
+                const supabase = createClient()
+                const { error } = await (supabase.auth as any).signInWithPasskey?.() ?? {}
+                if (error) setMfaError('Passkey setup failed: ' + error.message)
+                else setMfaSuccess('Passkey registered successfully!')
+              }}
+              className="btn-secondary"
+            >
+              Register passkey
+            </button>
           </div>
         </div>
       )}

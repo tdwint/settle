@@ -44,7 +44,7 @@ export default async function DashboardPage() {
     { label: 'Total earned', value: formatCurrency(totalRevenue), sub: 'all time', color: 'text-teal-600', bg: 'bg-teal-50' },
     { label: 'Awaiting payment', value: formatCurrency(pendingAmount), sub: `${pending.length} invoice${pending.length !== 1 ? 's' : ''}`, color: 'text-blue-600', bg: 'bg-blue-50' },
     { label: 'Overdue', value: String(overdue.length), sub: overdue.length > 0 ? 'needs attention' : 'all clear ✓', color: overdue.length > 0 ? 'text-red-600' : 'text-gray-500', bg: overdue.length > 0 ? 'bg-red-50' : 'bg-gray-50' },
-    { label: 'This month', value: String(profile?.invoices_this_month ?? 0), sub: profile?.subscription_tier === 'pro' ? 'unlimited plan' : 'of 3 free', color: 'text-coral-600', bg: 'bg-coral-50' },
+    { label: 'This month', value: String(profile?.invoices_this_month ?? 0), sub: profile?.subscription_tier === 'pro' ? 'unlimited plan' : 'of 5 free', color: 'text-coral-600', bg: 'bg-coral-50' },
   ]
 
   return (
@@ -74,10 +74,10 @@ export default async function DashboardPage() {
       </div>
 
       {/* FREE PLAN BANNER */}
-      {profile?.subscription_tier !== 'pro' && (profile?.invoices_this_month ?? 0) >= 2 && (
+      {profile?.subscription_tier !== 'pro' && (profile?.invoices_this_month ?? 0) >= 4 && (
         <div className="bg-coral-50 border border-coral-200 rounded-2xl p-4 mb-6 flex items-center justify-between">
           <div>
-            <p className="font-700 text-coral-800">You've used {profile?.invoices_this_month}/3 free invoices this month</p>
+            <p className="font-700 text-coral-800">You've used {profile?.invoices_this_month}/5 free invoices this month</p>
             <p className="text-sm text-coral-600 mt-0.5">Upgrade to Pro for unlimited invoices — just $12/month.</p>
           </div>
           <Link href="/settings?tab=billing" className="btn-primary whitespace-nowrap text-sm">Upgrade →</Link>

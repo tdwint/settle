@@ -9,7 +9,7 @@ export const PLANS = {
     name: 'Free',
     price: 0,
     invoicesPerMonth: 3,
-    features: ['3 invoices/month', 'Custom branding', 'Online payments', 'PDF export'],
+    features: ['5 invoices/month', 'Custom branding', 'Online payments', 'PDF export'],
   },
   pro: {
     name: 'Pro',

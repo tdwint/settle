@@ -89,6 +89,7 @@ export interface CreateInvoicePayload {
   client_name: string
   client_email: string
   client_address?: string
+  client_phone?: string
   due_date?: string
   tax_rate?: number
   discount_amount?: number

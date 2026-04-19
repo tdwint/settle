@@ -22,7 +22,7 @@ export async function POST(request: Request) {
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (!user || authError) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  // Plan gating: free users max 3 invoices/month
+  // Plan gating: free users max 5 invoices/month
   const { data: profile } = await supabase
     .from('profiles').select('subscription_tier, invoices_this_month, invoices_month_reset').eq('id', user.id).single()
 
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     }).eq('id', user.id)
   }
 
-  if (profile?.subscription_tier !== 'pro' && invoicesThisMonth >= 3) {
+  if (profile?.subscription_tier !== 'pro' && invoicesThisMonth >= 5) {
     return NextResponse.json({ error: 'Free plan limit reached. Upgrade to Pro for unlimited invoices.' }, { status: 403 })
   }
 
@@ -91,6 +91,34 @@ export async function POST(request: Request) {
   if (itemsError) return NextResponse.json({ error: itemsError.message }, { status: 500 })
 
   await supabase.from('profiles').update({ invoices_this_month: invoicesThisMonth + 1 }).eq('id', user.id)
+
+  // Auto-create client if one doesn't exist for this email
+  if (body.client_email && !body.client_id) {
+    const { data: existingClient } = await supabase
+      .from('clients')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('email', body.client_email.trim())
+      .single()
+
+    if (!existingClient) {
+      const { data: newClient } = await supabase.from('clients').insert({
+        user_id: user.id,
+        name: body.client_name.trim(),
+        email: body.client_email.trim(),
+        address: body.client_address?.trim() ?? null,
+        phone: body.client_phone?.trim() ?? null,
+      }).select().single()
+
+      // Link the invoice to the new client
+      if (newClient) {
+        await supabase.from('invoices').update({ client_id: newClient.id }).eq('id', invoice.id)
+      }
+    } else {
+      // Link to existing client
+      await supabase.from('invoices').update({ client_id: existingClient.id }).eq('id', invoice.id)
+    }
+  }
 
   return NextResponse.json({ data: invoice }, { status: 201 })
 }

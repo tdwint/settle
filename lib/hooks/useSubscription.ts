@@ -8,7 +8,7 @@ export function useSubscription() {
   const isActive = tier === 'pro' && (status === 'active' || status === 'trialing')
   const isPro = isActive
   const invoicesThisMonth = profile?.invoices_this_month ?? 0
-  const canCreateInvoice = isPro || invoicesThisMonth < 3
+  const canCreateInvoice = isPro || invoicesThisMonth < 5
 
   return { tier, status, isActive, isPro, canCreateInvoice, invoicesThisMonth, loading }
 }
