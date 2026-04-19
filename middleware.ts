@@ -21,18 +21,30 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  // FIX: wrap getUser in try/catch so invalid/missing tokens don't crash middleware
+  let user = null
+  try {
+    const { data } = await supabase.auth.getUser()
+    user = data?.user ?? null
+  } catch {
+    user = null
+  }
+
+  const pathname = request.nextUrl.pathname
 
   const isProtected =
-    request.nextUrl.pathname.startsWith('/dashboard') ||
-    request.nextUrl.pathname.startsWith('/invoices') ||
-    request.nextUrl.pathname.startsWith('/settings') ||
-    request.nextUrl.pathname.startsWith('/admin')
+    pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/invoices') ||
+    pathname.startsWith('/settings') ||
+    pathname.startsWith('/admin')
 
   // Allow public invoice payment pages
-  const isPublicPayment = request.nextUrl.pathname.match(/^\/invoices\/[^/]+\/pay$/)
+  const isPublicPayment = pathname.match(/^\/invoices\/[^/]+\/pay$/)
 
-  if (isProtected && !isPublicPayment && !user) {
+  // Allow auth callback
+  const isAuthCallback = pathname.startsWith('/auth/callback')
+
+  if (isProtected && !isPublicPayment && !isAuthCallback && !user) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
