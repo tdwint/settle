@@ -137,3 +137,87 @@ export function invoicePaidEmailHtml({
 </body>
 </html>`.trim()
 }
+
+export function invoiceSentEmailHtml({
+  freelancerName,
+  clientName,
+  invoiceNumber,
+  amount,
+  currency,
+  paymentUrl,
+  items,
+}: {
+  freelancerName: string
+  clientName: string
+  invoiceNumber: string
+  amount: string
+  currency: string
+  paymentUrl: string
+  items?: { description: string; amount: number }[]
+}) {
+  const itemRows = items && items.length > 0
+    ? items.map(item => `
+        <tr>
+          <td style="padding:8px 0; font-size:14px; color:#475569; border-bottom:1px solid #f1f5f9;">${item.description}</td>
+          <td style="padding:8px 0; font-size:14px; color:#1e293b; font-weight:600; text-align:right; border-bottom:1px solid #f1f5f9;">$${item.amount.toFixed(2)}</td>
+        </tr>`).join('')
+    : ''
+
+  return `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>
+<body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; background:#f8fafc; margin:0; padding:0;">
+  <div style="max-width:520px; margin:40px auto; background:#fff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden;">
+    <div style="background:linear-gradient(135deg,#080720 0%,#1e1b6e 100%); padding:28px 32px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:32px; height:32px; background:linear-gradient(135deg,#f59e0b,#d97706); border-radius:8px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:white; font-weight:700; font-size:16px;">S</span>
+        </div>
+        <span style="color:white; font-size:18px; font-weight:700;">Settle</span>
+      </div>
+    </div>
+    <div style="padding:36px 32px;">
+      <h1 style="font-size:22px; font-weight:800; color:#0f172a; margin:0 0 6px;">You have a new invoice</h1>
+      <p style="font-size:15px; color:#64748b; margin:0 0 24px;">${freelancerName} has sent you invoice ${invoiceNumber}.</p>
+
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:20px; margin-bottom:24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:12px; color:#94a3b8; margin-bottom:4px;">Amount due</div>
+            <div style="font-size:32px; font-weight:800; color:#0f172a;">${amount} ${currency}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:12px; color:#94a3b8; margin-bottom:4px;">Invoice</div>
+            <div style="font-size:16px; font-weight:600; color:#475569;">${invoiceNumber}</div>
+          </div>
+        </div>
+      </div>
+
+      ${itemRows ? `
+      <table style="width:100%; border-collapse:collapse; margin-bottom:24px;">
+        <thead>
+          <tr>
+            <th style="text-align:left; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; padding-bottom:8px;">Description</th>
+            <th style="text-align:right; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; padding-bottom:8px;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>${itemRows}</tbody>
+      </table>` : ''}
+
+      <div style="text-align:center; margin-top:28px;">
+        <a href="${paymentUrl}" style="display:inline-block; background:linear-gradient(135deg,#f59e0b,#d97706); color:white; font-weight:700; font-size:15px; padding:14px 32px; border-radius:12px; text-decoration:none;">
+          Pay now →
+        </a>
+      </div>
+      <p style="font-size:13px; color:#94a3b8; text-align:center; margin-top:16px;">
+        Or copy this link: <a href="${paymentUrl}" style="color:#d97706;">${paymentUrl}</a>
+      </p>
+    </div>
+    <div style="padding:20px 32px; background:#f8fafc; border-top:1px solid #e2e8f0; text-align:center;">
+      <p style="font-size:12px; color:#94a3b8; margin:0;">Powered by Settle · Secure payment via Stripe</p>
+    </div>
+  </div>
+</body>
+</html>`.trim()
+}

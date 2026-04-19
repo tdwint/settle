@@ -208,7 +208,7 @@ export default function ClientsPage() {
                   {/* Actions */}
                   <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Link
-                      href={`/invoices/new?client_id=${client.id}&client_name=${encodeURIComponent(client.name)}&client_email=${encodeURIComponent(client.email)}`}
+                      href={`/invoices/new?client_id=${client.id}&client_name=${encodeURIComponent(client.name)}&client_email=${encodeURIComponent(client.email)}&client_address=${encodeURIComponent(client.address ?? '')}&client_phone=${encodeURIComponent(client.phone ?? '')}`}
                       className="text-xs font-600 text-coral-500 hover:text-coral-600 px-3 py-1.5 rounded-lg hover:bg-coral-50 transition-colors">
                       + Invoice
                     </Link>

@@ -15,6 +15,7 @@ export default function NewInvoicePage() {
   const [clientName, setClientName] = useState(searchParams.get('client_name') ?? '')
   const [clientEmail, setClientEmail] = useState(searchParams.get('client_email') ?? '')
   const [clientAddress, setClientAddress] = useState(searchParams.get('client_address') ?? '')
+  const [clientPhone, setClientPhone] = useState(searchParams.get('client_phone') ?? '')
   const [clientId, setClientId] = useState(searchParams.get('client_id') ?? '')
   const [dueDate, setDueDate] = useState('')
   const [currency, setCurrency] = useState('USD')
@@ -44,7 +45,7 @@ export default function NewInvoicePage() {
     const res = await fetch('/api/invoices', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ client_id: clientId || undefined, client_name: clientName, client_email: clientEmail, client_address: clientAddress, due_date: dueDate || undefined, currency, tax_rate: taxRate, discount_amount: discount, notes, items }),
+      body: JSON.stringify({ client_id: clientId || undefined, client_name: clientName, client_email: clientEmail, client_address: clientAddress, client_phone: clientPhone, due_date: dueDate || undefined, currency, tax_rate: taxRate, discount_amount: discount, notes, items }),
     })
 
     const data = await res.json()
@@ -66,10 +67,10 @@ export default function NewInvoicePage() {
     return (
       <div className="max-w-xl mx-auto text-center py-24">
         <div className="text-5xl mb-4">🚀</div>
-        <h2 className="text-2xl font-800 text-gray-900 mb-3">You've used all 3 free invoices this month</h2>
+        <h2 className="text-2xl font-800 text-gray-900 mb-3">You've used all 5 free invoices this month</h2>
         <p className="text-gray-500 mb-8">Upgrade to Pro for unlimited invoices, client reminders, and more.</p>
         <Link href="/settings?tab=billing" className="btn-primary text-base px-8 py-3">Upgrade to Pro — $12/mo</Link>
-        <p className="mt-4 text-sm text-gray-400">Or wait until next month to use your 3 free invoices again.</p>
+        <p className="mt-4 text-sm text-gray-400">Or wait until next month to use your 5 free invoices again.</p>
       </div>
     )
   }
@@ -100,6 +101,10 @@ export default function NewInvoicePage() {
             <div className="col-span-2">
               <label className="block text-sm font-600 text-gray-700 mb-1.5">Client address</label>
               <input className="input" value={clientAddress} onChange={e => setClientAddress(e.target.value)} placeholder="123 Main St, City, Country" />
+            </div>
+            <div className="col-span-2 md:col-span-1">
+              <label className="block text-sm font-600 text-gray-700 mb-1.5">Client phone</label>
+              <input className="input" type="tel" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="+1 555 000 0000" />
             </div>
           </div>
         </div>
