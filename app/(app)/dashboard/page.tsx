@@ -77,7 +77,7 @@ export default async function DashboardPage() {
       {profile?.subscription_tier !== 'pro' && (profile?.invoices_this_month ?? 0) >= 2 && (
         <div className="bg-coral-50 border border-coral-200 rounded-2xl p-4 mb-6 flex items-center justify-between">
           <div>
-            <p className="font-700 text-coral-800">You've used {profile?.invoices_this_month}/3 free invoices this month</p>
+            <p className="font-700 text-coral-800">You've used {profile?.invoices_this_month}/5 free invoices this month</p>
             <p className="text-sm text-coral-600 mt-0.5">Upgrade to Pro for unlimited invoices — just $12/month.</p>
           </div>
           <Link href="/settings?tab=billing" className="btn-primary whitespace-nowrap text-sm">Upgrade →</Link>
