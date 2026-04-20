@@ -62,6 +62,7 @@ export interface Invoice {
   client_name: string | null
   client_email: string | null
   client_address: string | null
+  client_phone: string | null
   stripe_payment_intent_id: string | null
   stripe_payment_link: string | null
   paid_at: string | null

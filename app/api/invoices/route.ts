@@ -63,6 +63,7 @@ export async function POST(request: Request) {
       client_name: body.client_name,
       client_email: body.client_email,
       client_address: body.client_address ?? null,
+      client_phone: body.client_phone ?? null,
       due_date: body.due_date ?? null,
       currency: body.currency,
       tax_rate: body.tax_rate ?? 0,

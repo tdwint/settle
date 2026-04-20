@@ -59,6 +59,7 @@ export default async function InvoicePage({ params }: { params: { id: string } }
           <p className="font-700 text-gray-900">{invoice.client_name}</p>
           <p className="text-sm text-gray-500">{invoice.client_email}</p>
           {invoice.client_address && <p className="text-sm text-gray-500 whitespace-pre-line">{invoice.client_address}</p>}
+          {invoice.client_phone && <p className="text-sm text-gray-500">{invoice.client_phone}</p>}
         </div>
 
         {/* Items */}
