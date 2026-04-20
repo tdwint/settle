@@ -265,8 +265,9 @@ export default function LandingPage() {
           </div>
           <p className="text-xs" style={{color:'#94a3b8'}}>© {new Date().getFullYear()} Settle. Built for freelancers.</p>
           <div className="flex gap-6 text-xs" style={{color:'#94a3b8'}}>
-            <a href="#" className="hover:text-slate-600 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-slate-600 transition-colors">Terms</a>
+            <Link href="/privacy" className="hover:text-slate-600 transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-slate-600 transition-colors">Terms</Link>
+            <Link href="/support" className="hover:text-slate-600 transition-colors">Support</Link>
           </div>
         </div>
       </footer>
