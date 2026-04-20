@@ -10,6 +10,7 @@ export default function SettingsPage() {
   const searchParams = useSearchParams()
   const [tab, setTab] = useState(searchParams.get('tab') ?? 'profile')
   const [mfaEnrolling, setMfaEnrolling] = useState(false)
+  const [mfaFactorId, setMfaFactorId] = useState('')
   const [qrCode, setQrCode] = useState('')
   const [totpSecret, setTotpSecret] = useState('')
   const [totpCode, setTotpCode] = useState('')
@@ -186,8 +187,16 @@ export default function SettingsPage() {
                   setMfaError('')
                   const { createClient } = await import('@/lib/supabase/client')
                   const supabase = createClient()
+                  // Clean up any stale unverified factors from previous attempts
+                  const { data: existing } = await supabase.auth.mfa.listFactors()
+                  for (const factor of existing?.totp ?? []) {
+                    if (factor.status !== 'verified') {
+                      await supabase.auth.mfa.unenroll({ factorId: factor.id })
+                    }
+                  }
                   const { data, error } = await supabase.auth.mfa.enroll({ factorType: 'totp', friendlyName: 'Authenticator app' })
                   if (error) { setMfaError(error.message); setMfaEnrolling(false); return }
+                  setMfaFactorId(data.id)
                   setQrCode(data.totp.qr_code)
                   setTotpSecret(data.totp.secret)
                 }}
@@ -224,8 +233,7 @@ export default function SettingsPage() {
                       setMfaError('')
                       const { createClient } = await import('@/lib/supabase/client')
                       const supabase = createClient()
-                      const { data: factors } = await supabase.auth.mfa.listFactors()
-                      const factorId = factors?.totp?.[0]?.id
+                      const factorId = mfaFactorId
                       if (!factorId) { setMfaError('Setup failed — please try again'); return }
                       const { data: challenge } = await supabase.auth.mfa.challenge({ factorId })
                       if (!challenge) { setMfaError('Challenge failed'); return }
