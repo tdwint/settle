@@ -71,7 +71,7 @@ export default function SupportPage() {
               },
               {
                 q: 'What\'s the difference between Free and Pro?',
-                a: 'Free gives you 5 invoices per month. Pro ($12/mo or $10/mo billed annually) gives you unlimited invoices, client reminders, CSV export, and priority support.'
+                a: 'Free gives you 5 invoices per month. Pro ($12/mo or $100/year billed annually) gives you unlimited invoices, client reminders, CSV export, and priority support.'
               },
               {
                 q: 'How do I cancel my Pro subscription?',

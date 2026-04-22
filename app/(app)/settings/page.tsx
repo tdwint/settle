@@ -148,7 +148,7 @@ export default function SettingsPage() {
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-coral-500 text-white text-xs font-700 px-3 py-1 rounded-full">Best value</div>
                     <p className="font-700 text-gray-900 mb-1">Annual</p>
                     <p className="text-2xl font-800 text-gray-900">$10<span className="text-sm font-400 text-gray-400">/mo</span></p>
-                    <p className="text-xs text-gray-400">Billed $120/year</p>
+                    <p className="text-xs text-gray-400">Billed $100/year</p>
                     <button onClick={() => handleUpgrade(PLANS.pro.annualPriceId)} disabled={!!billingLoading}
                       className="btn-primary w-full mt-4 text-sm">
                       {billingLoading === PLANS.pro.annualPriceId ? 'Loading…' : 'Upgrade annual'}

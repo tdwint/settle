@@ -16,7 +16,7 @@ export const PLANS = {
     monthlyPriceId: process.env.STRIPE_PRO_MONTHLY_PRICE_ID!,
     annualPriceId: process.env.STRIPE_PRO_ANNUAL_PRICE_ID!,
     monthlyPrice: 12,
-    annualPrice: 120,
+    annualPrice: 100,
     invoicesPerMonth: Infinity,
     features: ['Unlimited invoices', 'Custom branding', 'Online payments', 'PDF export', 'Client reminders', 'CSV export'],
   },

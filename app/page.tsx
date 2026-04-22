@@ -189,7 +189,7 @@ export default function LandingPage() {
                 <span className="text-4xl font-bold text-white">$12</span>
                 <span className="mb-1" style={{color:'#64748b'}}>/month</span>
               </div>
-              <p className="text-sm mb-8" style={{color:'#64748b'}}>$120/year — save 2 months</p>
+              <p className="text-sm mb-8" style={{color:'#64748b'}}>$100/year — save $44</p>
               <ul className="space-y-3 mb-8">
                 {['Unlimited invoices', 'Custom branding', 'Online payments', 'PDF export', 'Client management', 'Client reminders', 'CSV export', 'Priority support'].map(f => (
                   <li key={f} className="flex items-center gap-2.5 text-sm" style={{color:'#cbd5e1'}}>

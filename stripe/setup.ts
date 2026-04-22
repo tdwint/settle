@@ -23,7 +23,7 @@ async function setup() {
   const annual = await stripe.prices.create({
     product: product.id,
     currency: 'usd',
-    unit_amount: 12000,
+    unit_amount: 10000,
     recurring: { interval: 'year' },
     nickname: 'Pro Annual',
   })
