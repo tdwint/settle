@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Settle — Free Invoice App for Freelancers, Contractors & Trades',
-  description: 'Send professional invoices and get paid online in minutes. Free invoice software for freelancers, plumbers, electricians, designers, developers, landscapers, and more. No credit card required.',
+  title: 'Settle — Free Invoice App for Freelancers, Contractors, Trades & Creatives',
+  description: 'Send professional invoices and get paid online in minutes. Free invoice software for freelancers, plumbers, electricians, designers, musicians, producers, artists, and more. No credit card required.',
   alternates: { canonical: 'https://gigpay.today' },
 }
 
@@ -127,9 +127,9 @@ export default function LandingPage() {
       {/* ── SOCIAL PROOF ────────────────────────────────────── */}
       <section className="py-10 border-b" style={{borderColor:'#e2e8f0'}}>
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest mb-5" style={{color:'#94a3b8'}}>Used by freelancers &amp; trades across the US</p>
+          <p className="text-xs font-semibold uppercase tracking-widest mb-5" style={{color:'#94a3b8'}}>Used by freelancers, trades &amp; creatives across the US</p>
           <div className="flex items-center justify-center gap-8 flex-wrap">
-            {['Designers', 'Developers', 'Copywriters', 'Consultants', 'Photographers', 'Plumbers', 'Electricians', 'Painters', 'Landscapers', 'Cabinet Makers'].map(role => (
+            {['Designers', 'Developers', 'Copywriters', 'Consultants', 'Photographers', 'Musicians', 'Producers', 'Artists', 'Plumbers', 'Electricians', 'Painters', 'Landscapers', 'Cabinet Makers'].map(role => (
               <span key={role} className="text-sm font-medium" style={{color:'#cbd5e1'}}>{role}</span>
             ))}
           </div>
@@ -265,6 +265,9 @@ export default function LandingPage() {
               { emoji: '🏗️', trade: 'Contractors', desc: 'Progress billing, final invoices, change orders — all in one place.' },
               { emoji: '📷', trade: 'Photographers', desc: 'Bill per session or package. Accept card payments from any client.' },
               { emoji: '💻', trade: 'Developers', desc: 'Hourly or project-based. Multi-currency for international clients.' },
+              { emoji: '🎵', trade: 'Musicians', desc: 'Invoice for gigs, sessions, and lessons. Get paid before you pack up.' },
+              { emoji: '🎬', trade: 'Producers', desc: 'Bill for beats, mixes, videos, and content. One link, instant payment.' },
+              { emoji: '🎨', trade: 'Artists', desc: 'Commission work, prints, murals — invoice professionally every time.' },
             ].map(({ emoji, trade, desc }) => (
               <div key={trade} className="card p-5">
                 <div className="text-2xl mb-3">{emoji}</div>

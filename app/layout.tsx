@@ -15,6 +15,8 @@ export const metadata: Metadata = {
     'free invoice app', 'invoice software for freelancers', 'invoice app for contractors',
     'invoice for plumbers', 'invoice for electricians', 'invoice for painters',
     'invoice for landscapers', 'invoice for designers', 'invoice for developers',
+    'invoice for musicians', 'invoice for producers', 'invoice for artists',
+    'musician invoice template', 'freelance musician invoicing', 'music producer invoice',
     'send invoices online', 'get paid online', 'freelance invoicing', 'contractor invoice',
     'small business invoice', 'invoice generator', 'online payment for freelancers',
   ],
