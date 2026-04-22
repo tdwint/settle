@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Settle — Free Invoice App for Freelancers, Contractors & Trades',
+  description: 'Send professional invoices and get paid online in minutes. Free invoice software for freelancers, plumbers, electricians, designers, developers, landscapers, and more. No credit card required.',
+  alternates: { canonical: 'https://gigpay.today' },
+}
 
 export default function LandingPage() {
   return (
@@ -120,9 +127,9 @@ export default function LandingPage() {
       {/* ── SOCIAL PROOF ────────────────────────────────────── */}
       <section className="py-10 border-b" style={{borderColor:'#e2e8f0'}}>
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest mb-5" style={{color:'#94a3b8'}}>Trusted by freelancers worldwide</p>
-          <div className="flex items-center justify-center gap-10 flex-wrap">
-            {['Designers', 'Developers', 'Copywriters', 'Consultants', 'Photographers'].map(role => (
+          <p className="text-xs font-semibold uppercase tracking-widest mb-5" style={{color:'#94a3b8'}}>Used by freelancers &amp; trades across the US</p>
+          <div className="flex items-center justify-center gap-8 flex-wrap">
+            {['Designers', 'Developers', 'Copywriters', 'Consultants', 'Photographers', 'Plumbers', 'Electricians', 'Painters', 'Landscapers', 'Cabinet Makers'].map(role => (
               <span key={role} className="text-sm font-medium" style={{color:'#cbd5e1'}}>{role}</span>
             ))}
           </div>
@@ -234,6 +241,43 @@ export default function LandingPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── TRADES SECTION ──────────────────────────────────── */}
+      <section className="py-24 border-y" style={{background:'#f8fafc', borderColor:'#e2e8f0'}}>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{color:'#d97706'}}>Built for the trades too</p>
+            <h2 className="font-display text-4xl mb-4" style={{color:'#0f172a'}}>Invoice software for contractors &amp; trades</h2>
+            <p className="max-w-xl mx-auto" style={{color:'#64748b'}}>
+              Whether you're a plumber finishing a job, an electrician wrapping up a project, or a landscaper billing for the season —
+              Settle makes it fast and professional.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { emoji: '🔧', trade: 'Plumbers', desc: 'Bill for parts, labor, and service calls in one clean invoice.' },
+              { emoji: '⚡', trade: 'Electricians', desc: 'Itemize materials and hourly labor. Get paid on the spot.' },
+              { emoji: '🎨', trade: 'Painters', desc: 'Quote by room or sq ft. Collect deposits and final payments online.' },
+              { emoji: '🌿', trade: 'Landscapers', desc: 'Recurring or one-time — invoice for mowing, installs, and cleanups.' },
+              { emoji: '🪟', trade: 'Cabinet Makers', desc: 'Custom work deserves a professional invoice. Send it before you leave.' },
+              { emoji: '🏗️', trade: 'Contractors', desc: 'Progress billing, final invoices, change orders — all in one place.' },
+              { emoji: '📷', trade: 'Photographers', desc: 'Bill per session or package. Accept card payments from any client.' },
+              { emoji: '💻', trade: 'Developers', desc: 'Hourly or project-based. Multi-currency for international clients.' },
+            ].map(({ emoji, trade, desc }) => (
+              <div key={trade} className="card p-5">
+                <div className="text-2xl mb-3">{emoji}</div>
+                <h3 className="font-semibold text-sm mb-1" style={{color:'#0f172a'}}>{trade}</h3>
+                <p className="text-xs leading-relaxed" style={{color:'#64748b'}}>{desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link href="/signup" className="btn-primary">
+              Start invoicing free — no card needed
+            </Link>
+          </div>
         </div>
       </section>
 
