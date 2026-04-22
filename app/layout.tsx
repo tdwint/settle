@@ -22,6 +22,7 @@ export const metadata: Metadata = {
   creator: 'Botani Productions',
   publisher: 'Botani Productions',
   alternates: { canonical: APP_URL },
+  verification: { google: '0759d1cdd1df3ed8' },
   openGraph: {
     type: 'website',
     locale: 'en_US',
