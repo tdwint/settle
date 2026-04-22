@@ -257,24 +257,36 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { emoji: '🔧', trade: 'Plumbers', desc: 'Bill for parts, labor, and service calls in one clean invoice.' },
-              { emoji: '⚡', trade: 'Electricians', desc: 'Itemize materials and hourly labor. Get paid on the spot.' },
-              { emoji: '🎨', trade: 'Painters', desc: 'Quote by room or sq ft. Collect deposits and final payments online.' },
-              { emoji: '🌿', trade: 'Landscapers', desc: 'Recurring or one-time — invoice for mowing, installs, and cleanups.' },
-              { emoji: '🪟', trade: 'Cabinet Makers', desc: 'Custom work deserves a professional invoice. Send it before you leave.' },
-              { emoji: '🏗️', trade: 'Contractors', desc: 'Progress billing, final invoices, change orders — all in one place.' },
-              { emoji: '📷', trade: 'Photographers', desc: 'Bill per session or package. Accept card payments from any client.' },
-              { emoji: '💻', trade: 'Developers', desc: 'Hourly or project-based. Multi-currency for international clients.' },
-              { emoji: '🎵', trade: 'Musicians', desc: 'Invoice for gigs, sessions, and lessons. Get paid before you pack up.' },
-              { emoji: '🎬', trade: 'Producers', desc: 'Bill for beats, mixes, videos, and content. One link, instant payment.' },
-              { emoji: '🎨', trade: 'Artists', desc: 'Commission work, prints, murals — invoice professionally every time.' },
-            ].map(({ emoji, trade, desc }) => (
-              <div key={trade} className="card p-5">
-                <div className="text-2xl mb-3">{emoji}</div>
-                <h3 className="font-semibold text-sm mb-1" style={{color:'#0f172a'}}>{trade}</h3>
-                <p className="text-xs leading-relaxed" style={{color:'#64748b'}}>{desc}</p>
-              </div>
-            ))}
+              { emoji: '🔧', trade: 'Plumbers', desc: 'Bill for parts, labor, and service calls in one clean invoice.', href: null },
+              { emoji: '⚡', trade: 'Electricians', desc: 'Itemize materials and hourly labor. Get paid on the spot.', href: null },
+              { emoji: '🎨', trade: 'Painters', desc: 'Quote by room or sq ft. Collect deposits and final payments online.', href: null },
+              { emoji: '🌿', trade: 'Landscapers', desc: 'Recurring or one-time — invoice for mowing, installs, and cleanups.', href: null },
+              { emoji: '🪟', trade: 'Cabinet Makers', desc: 'Custom work deserves a professional invoice. Send it before you leave.', href: null },
+              { emoji: '🏗️', trade: 'Contractors', desc: 'Progress billing, final invoices, change orders — all in one place.', href: null },
+              { emoji: '📷', trade: 'Photographers', desc: 'Bill per session or package. Accept card payments from any client.', href: null },
+              { emoji: '💻', trade: 'Developers', desc: 'Hourly or project-based. Multi-currency for international clients.', href: null },
+              { emoji: '🎵', trade: 'Musicians', desc: 'Invoice for gigs, sessions, and lessons. Get paid before you pack up.', href: '/music-producers' },
+              { emoji: '🎬', trade: 'Producers', desc: 'Bill for beats, mixes, videos, and content. One link, instant payment.', href: '/music-producers' },
+              { emoji: '🎨', trade: 'Artists', desc: 'Commission work, prints, murals — invoice professionally every time.', href: '/music-producers' },
+            ].map(({ emoji, trade, desc, href }) => {
+              const inner = (
+                <>
+                  <div className="text-2xl mb-3">{emoji}</div>
+                  <h3 className="font-semibold text-sm mb-1" style={{color:'#0f172a'}}>{trade}</h3>
+                  <p className="text-xs leading-relaxed" style={{color:'#64748b'}}>{desc}</p>
+                  {href && <p className="text-xs font-semibold mt-2" style={{color:'#d97706'}}>Learn more →</p>}
+                </>
+              )
+              return href ? (
+                <Link key={trade} href={href} className="card p-5 hover:-translate-y-0.5 transition-transform duration-200" style={{textDecoration:'none'}}>
+                  {inner}
+                </Link>
+              ) : (
+                <div key={trade} className="card p-5">
+                  {inner}
+                </div>
+              )
+            })}
           </div>
           <div className="text-center mt-10">
             <Link href="/signup" className="btn-primary">
