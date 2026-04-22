@@ -51,9 +51,19 @@ export default function SettingsPage() {
 
   async function handleUpgrade(priceId: string) {
     setBillingLoading(priceId)
-    const res = await fetch('/api/stripe/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ priceId }) })
-    const { url } = await res.json()
-    window.location.href = url
+    try {
+      const res = await fetch('/api/stripe/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ priceId }) })
+      const data = await res.json()
+      if (!res.ok || !data.url) {
+        alert('Checkout error: ' + (data.error ?? 'Unknown error'))
+        setBillingLoading('')
+        return
+      }
+      window.location.href = data.url
+    } catch (err) {
+      alert('Something went wrong. Please try again.')
+      setBillingLoading('')
+    }
   }
 
   async function handlePortal() {

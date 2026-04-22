@@ -22,15 +22,21 @@ export async function POST(request: Request) {
       await supabase.from('profiles').update({ stripe_customer_id: customerId }).eq('id', user.id)
     }
 
-    const session = await stripe.checkout.sessions.create({
-      customer: customerId,
-      payment_method_types: ['card'],
-      line_items: [{ price: priceId, quantity: 1 }],
-      mode: 'subscription',
-      success_url: `${appUrl}/settings?upgraded=true`,
-      cancel_url: `${appUrl}/settings`,
-      metadata: { userId: user.id },
-    })
+    let session
+    try {
+      session = await stripe.checkout.sessions.create({
+        customer: customerId,
+        payment_method_types: ['card'],
+        line_items: [{ price: priceId, quantity: 1 }],
+        mode: 'subscription',
+        success_url: `${appUrl}/settings?upgraded=true`,
+        cancel_url: `${appUrl}/settings`,
+        metadata: { userId: user.id },
+      })
+    } catch (err: any) {
+      console.error('[checkout] Stripe error:', err?.message)
+      return NextResponse.json({ error: err?.message ?? 'Stripe error' }, { status: 500 })
+    }
     return NextResponse.json({ url: session.url })
   }
 
