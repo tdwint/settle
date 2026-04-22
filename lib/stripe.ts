@@ -13,8 +13,8 @@ export const PLANS = {
   },
   pro: {
     name: 'Pro',
-    monthlyPriceId: process.env.STRIPE_PRO_MONTHLY_PRICE_ID!,
-    annualPriceId: process.env.STRIPE_PRO_ANNUAL_PRICE_ID!,
+    monthlyPriceId: process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID!,
+    annualPriceId: process.env.NEXT_PUBLIC_STRIPE_PRO_ANNUAL_PRICE_ID!,
     monthlyPrice: 12,
     annualPrice: 100,
     invoicesPerMonth: Infinity,
