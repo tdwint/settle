@@ -116,9 +116,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
-      <body>
-        {children}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-4W8Y08LVCV"
           strategy="afterInteractive"
@@ -131,6 +128,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             gtag('config', 'G-4W8Y08LVCV');
           `}
         </Script>
+      </head>
+      <body>
+        {children}
       </body>
     </html>
   )
