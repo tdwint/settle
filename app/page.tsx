@@ -265,9 +265,9 @@ export default function LandingPage() {
               { emoji: '🏗️', trade: 'Contractors', desc: 'Progress billing, final invoices, change orders — all in one place.', href: null },
               { emoji: '📷', trade: 'Photographers', desc: 'Bill per session or package. Accept card payments from any client.', href: null },
               { emoji: '💻', trade: 'Developers', desc: 'Hourly or project-based. Multi-currency for international clients.', href: null },
-              { emoji: '🎵', trade: 'Musicians', desc: 'Invoice for gigs, sessions, and lessons. Get paid before you pack up.', href: '/music-producers' },
+              { emoji: '🎵', trade: 'Musicians', desc: 'Invoice for gigs, sessions, and lessons. Get paid before you pack up.', href: '/musicians' },
               { emoji: '🎬', trade: 'Producers', desc: 'Bill for beats, mixes, videos, and content. One link, instant payment.', href: '/music-producers' },
-              { emoji: '🎨', trade: 'Artists', desc: 'Commission work, prints, murals — invoice professionally every time.', href: '/music-producers' },
+              { emoji: '🎨', trade: 'Artists', desc: 'Commission work, prints, murals — invoice professionally every time.', href: '/artists' },
             ].map(({ emoji, trade, desc, href }) => {
               const inner = (
                 <>
