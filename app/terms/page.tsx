@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export const metadata = { title: 'Terms of Service — Settle' }
+export const metadata = { title: { absolute: 'Terms of Service — Settle' } }
 
 export default function TermsPage() {
   return (

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export const metadata = { title: 'Support — Settle' }
+export const metadata = { title: { absolute: 'Support — Settle' } }
 
 export default function SupportPage() {
   return (

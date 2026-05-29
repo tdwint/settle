@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Settle — Free Invoice App for Freelancers, Contractors, Trades & Creatives',
+  title: { absolute: 'Settle — Free Invoice App for Freelancers, Contractors, Trades & Creatives' },
   description: 'Send professional invoices and get paid online in minutes. Free invoice software for freelancers, plumbers, electricians, designers, musicians, producers, artists, and more. No credit card required.',
   alternates: { canonical: 'https://gigpay.today' },
 }
@@ -257,14 +257,14 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { emoji: '🔧', trade: 'Plumbers', desc: 'Bill for parts, labor, and service calls in one clean invoice.', href: null },
-              { emoji: '⚡', trade: 'Electricians', desc: 'Itemize materials and hourly labor. Get paid on the spot.', href: null },
-              { emoji: '🎨', trade: 'Painters', desc: 'Quote by room or sq ft. Collect deposits and final payments online.', href: null },
-              { emoji: '🌿', trade: 'Landscapers', desc: 'Recurring or one-time — invoice for mowing, installs, and cleanups.', href: null },
-              { emoji: '🪟', trade: 'Cabinet Makers', desc: 'Custom work deserves a professional invoice. Send it before you leave.', href: null },
-              { emoji: '🏗️', trade: 'Contractors', desc: 'Progress billing, final invoices, change orders — all in one place.', href: null },
-              { emoji: '📷', trade: 'Photographers', desc: 'Bill per session or package. Accept card payments from any client.', href: null },
-              { emoji: '💻', trade: 'Developers', desc: 'Hourly or project-based. Multi-currency for international clients.', href: null },
+              { emoji: '🔧', trade: 'Plumbers', desc: 'Bill for parts, labor, and service calls in one clean invoice.', href: '/plumbers' },
+              { emoji: '⚡', trade: 'Electricians', desc: 'Itemize materials and hourly labor. Get paid on the spot.', href: '/electricians' },
+              { emoji: '🎨', trade: 'Painters', desc: 'Quote by room or sq ft. Collect deposits and final payments online.', href: '/painters' },
+              { emoji: '🌿', trade: 'Landscapers', desc: 'Recurring or one-time — invoice for mowing, installs, and cleanups.', href: '/landscapers' },
+              { emoji: '🪟', trade: 'Cabinet Makers', desc: 'Custom work deserves a professional invoice. Send it before you leave.', href: '/cabinet-makers' },
+              { emoji: '🏗️', trade: 'Contractors', desc: 'Progress billing, final invoices, change orders — all in one place.', href: '/contractors' },
+              { emoji: '📷', trade: 'Photographers', desc: 'Bill per session or package. Accept card payments from any client.', href: '/photographers' },
+              { emoji: '💻', trade: 'Developers', desc: 'Hourly or project-based. Multi-currency for international clients.', href: '/developers' },
               { emoji: '🎵', trade: 'Musicians', desc: 'Invoice for gigs, sessions, and lessons. Get paid before you pack up.', href: '/musicians' },
               { emoji: '🎬', trade: 'Producers', desc: 'Bill for beats, mixes, videos, and content. One link, instant payment.', href: '/music-producers' },
               { emoji: '🎨', trade: 'Artists', desc: 'Commission work, prints, murals — invoice professionally every time.', href: '/artists' },

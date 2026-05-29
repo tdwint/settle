@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Invoice App for Music Producers & Sound Designers — Settle',
+  title: { absolute: 'Invoice App for Music Producers & Sound Designers — Settle' },
   description: 'Stop chasing payments for your production work. Settle lets music producers, sound designers, mix engineers, and session musicians invoice clients and get paid online in minutes.',
   alternates: { canonical: 'https://gigpay.today/music-producers' },
   openGraph: {

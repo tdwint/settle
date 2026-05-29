@@ -2,28 +2,28 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: { absolute: 'Invoice App for Artists — Illustrators, Muralists & Creatives — Settle' },
-  description: 'Stop undercharging and chasing clients. Settle lets artists of all kinds invoice for commissions, murals, illustrations, and more — and get paid online in minutes.',
-  alternates: { canonical: 'https://gigpay.today/artists' },
+  title: { absolute: 'Invoice App for Photographers — Portraits, Weddings & Commercial — Settle' },
+  description: 'Stop waiting weeks to get paid after a shoot. Settle lets photographers invoice clients professionally and get paid online in minutes. Free to start.',
+  alternates: { canonical: 'https://gigpay.today/photographers' },
   openGraph: {
-    title: 'Invoice App for Artists — Settle',
-    description: 'Stop undercharging and chasing clients. Invoice for commissions, murals, illustrations, and more. Get paid online in minutes.',
+    title: 'Invoice App for Photographers — Settle',
+    description: 'Stop waiting weeks to get paid after a shoot. Invoice professionally and get paid online in minutes.',
     type: 'website',
   },
 }
 
 const services = [
-  { emoji: '🖼️', title: 'Commissions', desc: 'Portraits, custom pieces, and character work. Collect deposits and final payments with ease.' },
-  { emoji: '🏙️', title: 'Murals', desc: 'Large-scale wall art and public installations. Bill for design, materials, and labor.' },
-  { emoji: '✏️', title: 'Illustration', desc: 'Editorial, book, and brand illustration. Invoice per project or per revision.' },
-  { emoji: '🖌️', title: 'Fine Art', desc: 'Paintings, prints, and gallery work. Sell your work and get paid professionally.' },
-  { emoji: '💡', title: 'Concept Art', desc: 'Game, film, and media concept work. Itemize by deliverable or milestone.' },
-  { emoji: '📱', title: 'Digital Art', desc: 'NFTs, digital prints, and licensed assets. Send invoices for every sale.' },
-  { emoji: '🎭', title: 'Set & Prop Design', desc: 'Theater, film, and event design work. Track every project with a proper invoice.' },
-  { emoji: '🖋️', title: 'Graphic Design', desc: 'Logos, branding, and visual identity. Bill for concepts, revisions, and finals.' },
+  { emoji: '💍', title: 'Wedding Photography', desc: 'Collect deposits and final payments. Invoice for packages, albums, and extras.' },
+  { emoji: '📸', title: 'Portrait Sessions', desc: 'Headshots, family portraits, and lifestyle shoots. Bill per session or package.' },
+  { emoji: '🏢', title: 'Commercial Work', desc: 'Brand, product, and corporate photography. Invoice by day rate or deliverable.' },
+  { emoji: '🎉', title: 'Events & Parties', desc: 'Birthdays, corporate events, and galas. Send the invoice before you leave the venue.' },
+  { emoji: '🏠', title: 'Real Estate', desc: 'Interior, exterior, and drone photography. Flat-fee invoicing that agents expect.' },
+  { emoji: '🛍️', title: 'Product Photography', desc: 'E-commerce, catalog, and studio shoots. Bill per image count or day rate.' },
+  { emoji: '📰', title: 'Editorial & Press', desc: 'Magazine, press, and journalism work. Track licensing and usage separately.' },
+  { emoji: '🎨', title: 'Fine Art & Licensing', desc: 'Prints, licensing, and art sales. Keep a professional paper trail for every deal.' },
 ]
 
-export default function ArtistsPage() {
+export default function PhotographersPage() {
   return (
     <div className="min-h-screen font-sans" style={{backgroundColor:'#f8fafc'}}>
 
@@ -52,16 +52,16 @@ export default function ArtistsPage() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 border rounded-full px-3 py-1.5 mb-8 text-xs font-semibold uppercase tracking-wider" style={{background:'rgba(255,255,255,0.06)', borderColor:'rgba(255,255,255,0.12)', color:'#fcd34d'}}>
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{background:'#f59e0b'}} />
-              Built for artists
+              Built for photographers
             </div>
 
             <h1 className="font-display leading-tight mb-6" style={{fontSize:'clamp(2.2rem, 5vw, 4rem)', color:'#ffffff', letterSpacing:'-0.03em', lineHeight:'1.05'}}>
-              Your work has value.<br />
-              <span style={{color:'#fbbf24'}}>Invoice like</span> you know it.
+              Click the shutter.<br />
+              <span style={{color:'#fbbf24'}}>Get paid</span> like a pro.
             </h1>
 
             <p className="text-lg leading-relaxed max-w-xl mb-10" style={{color:'rgba(148,163,184,0.9)'}}>
-              From commissions to murals to digital art — stop undercharging and chasing payment. Send a professional invoice in 2 minutes and get paid online, every time.
+              Whether you shoot weddings, portraits, or commercial work — stop waiting weeks to get paid. Send a professional invoice in 2 minutes and let clients pay by card on the spot.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
@@ -69,7 +69,7 @@ export default function ArtistsPage() {
                 Start invoicing free
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
               </Link>
-              <Link href="/blog/artists-guide-to-getting-paid" className="inline-flex items-center justify-center text-base font-medium px-7 py-3 rounded-xl transition-all" style={{background:'rgba(255,255,255,0.08)', border:'1px solid rgba(255,255,255,0.15)', color:'white'}}>
+              <Link href="/blog/photographers-guide-to-getting-paid" className="inline-flex items-center justify-center text-base font-medium px-7 py-3 rounded-xl transition-all" style={{background:'rgba(255,255,255,0.08)', border:'1px solid rgba(255,255,255,0.15)', color:'white'}}>
                 Why it matters →
               </Link>
             </div>
@@ -81,9 +81,9 @@ export default function ArtistsPage() {
       {/* SOCIAL PROOF */}
       <section className="py-10 border-b" style={{borderColor:'#e2e8f0'}}>
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest mb-5" style={{color:'#94a3b8'}}>For every kind of working artist</p>
+          <p className="text-xs font-semibold uppercase tracking-widest mb-5" style={{color:'#94a3b8'}}>For every kind of working photographer</p>
           <div className="flex items-center justify-center gap-8 flex-wrap">
-            {['Illustrators', 'Muralists', 'Painters', 'Graphic Designers', 'Concept Artists', 'Digital Artists', 'Tattoo Artists', 'Set Designers'].map(role => (
+            {['Wedding Photographers', 'Portrait Photographers', 'Commercial Photographers', 'Event Photographers', 'Real Estate Photographers', 'Product Photographers', 'Photojournalists', 'Fine Art Photographers'].map(role => (
               <span key={role} className="text-sm font-medium" style={{color:'#cbd5e1'}}>{role}</span>
             ))}
           </div>
@@ -93,10 +93,10 @@ export default function ArtistsPage() {
       {/* SERVICES */}
       <section className="py-24 max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
-          <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{color:'#d97706'}}>Every project, properly invoiced</p>
-          <h2 className="font-display text-4xl mb-4" style={{color:'#0f172a'}}>Invoice for everything you create</h2>
+          <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{color:'#d97706'}}>Every shoot, properly invoiced</p>
+          <h2 className="font-display text-4xl mb-4" style={{color:'#0f172a'}}>Invoice for every way you shoot</h2>
           <p className="max-w-lg mx-auto" style={{color:'#64748b'}}>
-            Every commission, mural, and design job deserves a professional invoice and a fast, easy payment — not a Venmo request and a prayer.
+            From a single portrait session to a full wedding weekend — every shoot and service you deliver deserves a professional invoice and a fast payment.
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -115,13 +115,13 @@ export default function ArtistsPage() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{color:'#d97706'}}>How it works</p>
-            <h2 className="font-display text-4xl mb-4" style={{color:'#0f172a'}}>From finished piece to paid — fast</h2>
+            <h2 className="font-display text-4xl mb-4" style={{color:'#0f172a'}}>Invoice before you pack up your gear</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {[
-              { step: '01', title: 'Create your invoice', desc: 'Add your work, rate, and client details. Collect a deposit upfront or invoice the full amount on delivery.' },
-              { step: '02', title: 'Send the link', desc: 'Your client gets a professional invoice they can pay by card — no app, no friction.' },
-              { step: '03', title: 'Get paid, move on', desc: 'Payment lands instantly. You get notified. No awkward follow-ups, no waiting around.' },
+              { step: '01', title: 'Build your invoice', desc: 'Add your service, package, and rate. Session fees, travel, editing time — itemize exactly how you work.' },
+              { step: '02', title: 'Send the link', desc: 'Your client gets a clean, professional invoice. Payable by card in seconds — no app needed on their end.' },
+              { step: '03', title: 'Get notified instantly', desc: 'The moment they pay, you get an email. No chasing, no awkward follow-ups, no "I\'ll Venmo you later."' },
             ].map(({ step, title, desc }) => (
               <div key={step} className="text-center">
                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm mx-auto mb-4" style={{background:'linear-gradient(135deg, #0f0d38, #1e1b6e)', color:'#fbbf24'}}>{step}</div>
@@ -139,15 +139,15 @@ export default function ArtistsPage() {
           <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{color:'#94a3b8'}}>Also in the creative world</p>
         </div>
         <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+          <Link href="/artists" className="card p-5 hover:-translate-y-0.5 transition-transform duration-200" style={{textDecoration:'none'}}>
+            <div className="text-2xl mb-2">🎨</div>
+            <h3 className="font-semibold text-sm mb-1" style={{color:'#0f172a'}}>Artists</h3>
+            <p className="text-xs" style={{color:'#64748b'}}>Commissions, murals, illustrations, and more →</p>
+          </Link>
           <Link href="/musicians" className="card p-5 hover:-translate-y-0.5 transition-transform duration-200" style={{textDecoration:'none'}}>
             <div className="text-2xl mb-2">🎵</div>
             <h3 className="font-semibold text-sm mb-1" style={{color:'#0f172a'}}>Musicians</h3>
             <p className="text-xs" style={{color:'#64748b'}}>Sessions, gigs, lessons, and performances →</p>
-          </Link>
-          <Link href="/music-producers" className="card p-5 hover:-translate-y-0.5 transition-transform duration-200" style={{textDecoration:'none'}}>
-            <div className="text-2xl mb-2">🎛️</div>
-            <h3 className="font-semibold text-sm mb-1" style={{color:'#0f172a'}}>Music Producers</h3>
-            <p className="text-xs" style={{color:'#64748b'}}>Mixing, mastering, sound design, and presets →</p>
           </Link>
         </div>
       </section>
@@ -157,7 +157,7 @@ export default function ArtistsPage() {
         <div className="relative overflow-hidden rounded-3xl px-10 py-16 text-center" style={{background:'linear-gradient(135deg, #080720 0%, #1e1b6e 100%)'}}>
           <div className="absolute rounded-full blur-3xl pointer-events-none" style={{top:'-100px', left:'50%', transform:'translateX(-50%)', width:'400px', height:'400px', background:'rgba(245,158,11,0.1)'}} />
           <div className="relative">
-            <h2 className="font-display text-4xl text-white mb-4">Your art is your business. Get paid that way.</h2>
+            <h2 className="font-display text-4xl text-white mb-4">Your photography is a business. Invoice like one.</h2>
             <p className="mb-8 max-w-md mx-auto" style={{color:'#94a3b8'}}>Free to start. No credit card. First invoice in under 2 minutes.</p>
             <Link href="/signup" className="btn-primary text-base px-8 py-3">
               Start invoicing free

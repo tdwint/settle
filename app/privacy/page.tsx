@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export const metadata = { title: 'Privacy Policy — Settle' }
+export const metadata = { title: { absolute: 'Privacy Policy — Settle' } }
 
 export default function PrivacyPage() {
   return (
