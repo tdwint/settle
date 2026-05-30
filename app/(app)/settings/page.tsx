@@ -81,7 +81,7 @@ export default function SettingsPage() {
 
       {searchParams.get('upgraded') && (
         <div className="bg-teal-50 border border-teal-200 text-teal-800 rounded-2xl px-5 py-4 mb-6 font-600">
-          🎉 You're now on Pro! Enjoy unlimited invoices.
+          🎉 You're now on Pro! Enjoy unlimited invoices and estimates.
         </div>
       )}
 

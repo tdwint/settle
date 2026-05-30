@@ -178,7 +178,7 @@ export default function LandingPage() {
               </div>
               <p className="text-sm mb-8" style={{color:'#94a3b8'}}>Forever free, no card needed</p>
               <ul className="space-y-3 mb-8">
-                {['5 invoices per month', 'Custom branding', 'Online payments', 'PDF export', 'Client management'].map(f => (
+                {['5 invoices per month', 'Unlimited estimates', 'Custom branding', 'Online payments', 'PDF export', 'Client management'].map(f => (
                   <li key={f} className="flex items-center gap-2.5 text-sm" style={{color:'#475569'}}>
                     <svg className="w-4 h-4 flex-shrink-0" style={{color:'#16a34a'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
                     {f}
@@ -198,7 +198,7 @@ export default function LandingPage() {
               </div>
               <p className="text-sm mb-8" style={{color:'#64748b'}}>$100/year — save $44</p>
               <ul className="space-y-3 mb-8">
-                {['Unlimited invoices', 'Custom branding', 'Online payments', 'PDF export', 'Client management', 'Client reminders', 'CSV export', 'Priority support'].map(f => (
+                {['Unlimited invoices', 'Unlimited estimates', 'Custom branding', 'Online payments', 'PDF export', 'Client management', 'Client reminders', 'CSV export', 'Priority support'].map(f => (
                   <li key={f} className="flex items-center gap-2.5 text-sm" style={{color:'#cbd5e1'}}>
                     <svg className="w-4 h-4 flex-shrink-0" style={{color:'#fbbf24'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
                     {f}

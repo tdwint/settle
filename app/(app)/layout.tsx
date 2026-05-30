@@ -81,7 +81,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
               className="block rounded-xl p-3 text-center"
               style={{background:'linear-gradient(135deg,#080720,#1e1b6e)'}}>
               <p className="text-xs font-semibold text-amber-400 mb-0.5">Upgrade to Pro</p>
-              <p className="text-xs text-slate-400">Unlimited invoices</p>
+              <p className="text-xs text-slate-400">Unlimited invoices &amp; estimates</p>
             </Link>
           </div>
         )}
