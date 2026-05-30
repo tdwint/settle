@@ -138,6 +138,168 @@ export function invoicePaidEmailHtml({
 </html>`.trim()
 }
 
+export function estimateSentEmailHtml({
+  freelancerName,
+  clientName,
+  estimateNumber,
+  amount,
+  currency,
+  viewUrl,
+  validUntil,
+  items,
+}: {
+  freelancerName: string
+  clientName: string
+  estimateNumber: string
+  amount: string
+  currency: string
+  viewUrl: string
+  validUntil?: string
+  items?: { description: string; amount: number }[]
+}) {
+  const itemRows = items && items.length > 0
+    ? items.map(item => `
+        <tr>
+          <td style="padding:8px 0; font-size:14px; color:#475569; border-bottom:1px solid #f1f5f9;">${item.description}</td>
+          <td style="padding:8px 0; font-size:14px; color:#1e293b; font-weight:600; text-align:right; border-bottom:1px solid #f1f5f9;">$${item.amount.toFixed(2)}</td>
+        </tr>`).join('')
+    : ''
+
+  return `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>
+<body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; background:#f8fafc; margin:0; padding:0;">
+  <div style="max-width:520px; margin:40px auto; background:#fff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden;">
+    <div style="background:linear-gradient(135deg,#080720 0%,#1e1b6e 100%); padding:28px 32px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:32px; height:32px; background:linear-gradient(135deg,#f59e0b,#d97706); border-radius:8px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:white; font-weight:700; font-size:16px;">S</span>
+        </div>
+        <span style="color:white; font-size:18px; font-weight:700;">Settle</span>
+      </div>
+    </div>
+    <div style="padding:36px 32px;">
+      <h1 style="font-size:22px; font-weight:800; color:#0f172a; margin:0 0 6px;">You have a new estimate</h1>
+      <p style="font-size:15px; color:#64748b; margin:0 0 24px;">${freelancerName} has sent you estimate ${estimateNumber} for review.</p>
+
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:20px; margin-bottom:24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:12px; color:#94a3b8; margin-bottom:4px;">Estimate total</div>
+            <div style="font-size:32px; font-weight:800; color:#0f172a;">${amount} ${currency}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:12px; color:#94a3b8; margin-bottom:4px;">Estimate</div>
+            <div style="font-size:16px; font-weight:600; color:#475569;">${estimateNumber}</div>
+            ${validUntil ? `<div style="font-size:12px; color:#94a3b8; margin-top:4px;">Valid until ${validUntil}</div>` : ''}
+          </div>
+        </div>
+      </div>
+
+      ${itemRows ? `
+      <table style="width:100%; border-collapse:collapse; margin-bottom:24px;">
+        <thead>
+          <tr>
+            <th style="text-align:left; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; padding-bottom:8px;">Description</th>
+            <th style="text-align:right; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; padding-bottom:8px;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>${itemRows}</tbody>
+      </table>` : ''}
+
+      <p style="font-size:14px; color:#64748b; line-height:1.6; margin-bottom:28px;">
+        Review the estimate below and let ${freelancerName} know if you'd like to proceed.
+      </p>
+
+      <div style="text-align:center;">
+        <a href="${viewUrl}" style="display:inline-block; background:linear-gradient(135deg,#f59e0b,#d97706); color:white; font-weight:700; font-size:15px; padding:14px 32px; border-radius:12px; text-decoration:none;">
+          View estimate →
+        </a>
+      </div>
+      <p style="font-size:13px; color:#94a3b8; text-align:center; margin-top:16px;">
+        Or copy this link: <a href="${viewUrl}" style="color:#d97706;">${viewUrl}</a>
+      </p>
+    </div>
+    <div style="padding:20px 32px; background:#f8fafc; border-top:1px solid #e2e8f0; text-align:center;">
+      <p style="font-size:12px; color:#94a3b8; margin:0;">Powered by Settle · No payment required to view</p>
+    </div>
+  </div>
+</body>
+</html>`.trim()
+}
+
+export function estimateRespondedEmailHtml({
+  freelancerName,
+  clientName,
+  estimateNumber,
+  amount,
+  currency,
+  action,
+  clientNote,
+  estimateUrl,
+}: {
+  freelancerName: string
+  clientName: string
+  estimateNumber: string
+  amount: string
+  currency: string
+  action: 'accepted' | 'declined'
+  clientNote?: string
+  estimateUrl: string
+}) {
+  const isAccepted = action === 'accepted'
+  return `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>
+<body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; background:#f8fafc; margin:0; padding:0;">
+  <div style="max-width:520px; margin:40px auto; background:#fff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden;">
+    <div style="background:linear-gradient(135deg,#080720 0%,#1e1b6e 100%); padding:28px 32px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:32px; height:32px; background:linear-gradient(135deg,#f59e0b,#d97706); border-radius:8px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:white; font-weight:700; font-size:16px;">S</span>
+        </div>
+        <span style="color:white; font-size:18px; font-weight:700;">Settle</span>
+      </div>
+    </div>
+    <div style="padding:36px 32px;">
+      <div style="text-align:center; margin-bottom:28px;">
+        <div style="width:56px; height:56px; background:${isAccepted ? '#f0fdf4' : '#fef2f2'}; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:28px; margin-bottom:16px;">${isAccepted ? '✅' : '❌'}</div>
+        <h1 style="font-size:22px; font-weight:800; color:#0f172a; margin:0 0 6px;">${isAccepted ? 'Estimate accepted!' : 'Estimate declined'}</h1>
+        <p style="font-size:15px; color:#64748b; margin:0;">${clientName} ${isAccepted ? 'accepted' : 'declined'} estimate ${estimateNumber}</p>
+      </div>
+
+      <div style="background:${isAccepted ? '#f0fdf4' : '#fef2f2'}; border:1px solid ${isAccepted ? '#bbf7d0' : '#fecaca'}; border-radius:12px; padding:20px; text-align:center; margin-bottom:24px;">
+        <div style="font-size:32px; font-weight:800; color:${isAccepted ? '#15803d' : '#991b1b'};">${amount} ${currency}</div>
+        <div style="font-size:13px; color:${isAccepted ? '#16a34a' : '#dc2626'}; margin-top:4px;">${isAccepted ? 'Ready to convert to invoice' : 'No further action needed'}</div>
+      </div>
+
+      ${clientNote ? `
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:24px;">
+        <p style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; margin:0 0 8px;">Message from ${clientName}</p>
+        <p style="font-size:14px; color:#475569; margin:0; line-height:1.6;">"${clientNote}"</p>
+      </div>` : ''}
+
+      ${isAccepted ? `
+      <p style="font-size:14px; color:#64748b; line-height:1.6; margin-bottom:28px;">
+        Head to your estimates page to convert this into an invoice and send it when the job is complete.
+      </p>` : ''}
+
+      <div style="text-align:center;">
+        <a href="${estimateUrl}" style="display:inline-block; background:linear-gradient(135deg,${isAccepted ? '#059669,#047857' : '#f59e0b,#d97706'}); color:white; font-weight:700; font-size:15px; padding:13px 28px; border-radius:12px; text-decoration:none;">
+          ${isAccepted ? 'Convert to invoice →' : 'View estimate →'}
+        </a>
+      </div>
+    </div>
+    <div style="padding:20px 32px; background:#f8fafc; border-top:1px solid #e2e8f0; text-align:center;">
+      <p style="font-size:12px; color:#94a3b8; margin:0;">Settle · Built for freelancers</p>
+    </div>
+  </div>
+</body>
+</html>`.trim()
+}
+
 export function invoiceSentEmailHtml({
   freelancerName,
   clientName,

@@ -85,6 +85,68 @@ export interface DashboardStats {
   invoicesThisMonth: number
 }
 
+// ─── Estimates ───────────────────────────────────────────────
+
+export type EstimateStatus = 'draft' | 'sent' | 'viewed' | 'accepted' | 'declined' | 'expired' | 'converted'
+
+export interface EstimateItem {
+  id: string
+  estimate_id: string
+  description: string
+  quantity: number
+  rate: number
+  amount: number
+  sort_order: number
+  created_at: string
+}
+
+export interface Estimate {
+  id: string
+  user_id: string
+  client_id: string | null
+  estimate_number: string
+  status: EstimateStatus
+  valid_until: string | null
+  currency: string
+  subtotal: number
+  tax_rate: number
+  tax_amount: number
+  discount_amount: number
+  total: number
+  notes: string | null
+  client_name: string | null
+  client_email: string | null
+  client_address: string | null
+  client_phone: string | null
+  client_note: string | null
+  converted_invoice_id: string | null
+  sent_at: string | null
+  viewed_at: string | null
+  responded_at: string | null
+  created_at: string
+  updated_at: string
+  estimate_items?: EstimateItem[]
+  profiles?: Profile
+}
+
+export interface EstimateWithItems extends Estimate {
+  estimate_items: EstimateItem[]
+}
+
+export interface CreateEstimatePayload {
+  client_id?: string
+  client_name: string
+  client_email: string
+  client_address?: string
+  client_phone?: string
+  valid_until?: string
+  tax_rate?: number
+  discount_amount?: number
+  notes?: string
+  currency: string
+  items: { description: string; quantity: number; rate: number }[]
+}
+
 export interface CreateInvoicePayload {
   client_id?: string
   client_name: string

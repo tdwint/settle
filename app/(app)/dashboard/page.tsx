@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/stripe'
-import type { Invoice } from '@/lib/types'
+import type { Invoice, Estimate } from '@/lib/types'
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
@@ -33,6 +33,17 @@ export default async function DashboardPage() {
     .select('full_name, business_name, invoices_this_month, subscription_tier')
     .eq('id', user!.id)
     .single()
+
+  const { data: estimates } = await supabase
+    .from('estimates')
+    .select('id, estimate_number, client_name, total, currency, status, valid_until, created_at')
+    .eq('user_id', user!.id)
+    .in('status', ['sent', 'viewed', 'accepted'])
+    .order('created_at', { ascending: false })
+    .limit(5)
+
+  const pendingEstimates = (estimates ?? []) as Partial<Estimate>[]
+  const acceptedEstimates = pendingEstimates.filter(e => e.status === 'accepted')
 
   const allInvoices = (invoices ?? []) as Invoice[]
   const totalRevenue = allInvoices.filter(i => i.status === 'paid').reduce((s, i) => s + i.total, 0)
@@ -81,6 +92,38 @@ export default async function DashboardPage() {
             <p className="text-sm text-coral-600 mt-0.5">Upgrade to Pro for unlimited invoices — just $12/month.</p>
           </div>
           <Link href="/settings?tab=billing" className="btn-primary whitespace-nowrap text-sm">Upgrade →</Link>
+        </div>
+      )}
+
+      {/* ESTIMATES BANNER */}
+      {pendingEstimates.length > 0 && (
+        <div className="card overflow-hidden mb-6">
+          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 className="font-700 text-gray-900">Pending estimates</h2>
+            <Link href="/estimates" className="text-sm text-amber-600 font-600 hover:text-amber-700">View all →</Link>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {pendingEstimates.map(est => (
+              <Link key={est.id} href={`/estimates/${est.id}`}
+                className="flex items-center justify-between px-6 py-3 hover:bg-gray-50 transition-colors">
+                <div>
+                  <p className="font-600 text-gray-900 text-sm">{est.estimate_number}</p>
+                  <p className="text-xs text-gray-400">{est.client_name}</p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <p className="font-700 text-gray-900 text-sm">{formatCurrency(est.total ?? 0, est.currency ?? 'USD')}</p>
+                  <span className={`text-xs font-600 px-2.5 py-1 rounded-full ${
+                    est.status === 'accepted' ? 'bg-teal-100 text-teal-700' :
+                    est.status === 'viewed' ? 'bg-purple-100 text-purple-700' :
+                    'bg-blue-100 text-blue-700'
+                  }`}>
+                    {est.status === 'accepted' ? '✓ Accepted — convert →' :
+                     est.status === 'viewed' ? 'Viewed' : 'Sent'}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       )}
 
